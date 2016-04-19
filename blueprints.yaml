@@ -1,7 +1,7 @@
 name: DevTools
 version: 1.0.0
 description: Plugin and Theme scaffolding utilities
-icon: warning
+icon: cogs
 author:
   name: Team Grav
   email: devs@getgrav.org
