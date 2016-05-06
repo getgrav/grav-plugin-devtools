@@ -24,11 +24,6 @@ class DevToolsCommand extends ConsoleCommand
     protected $component = [];
 
     /**
-     * @var Grav
-     */
-    protected $grav;
-
-    /**
      * @var Inflector
      */
     protected $inflector;
@@ -60,13 +55,13 @@ class DevToolsCommand extends ConsoleCommand
             exit('FATAL: DEVTOOLS requires PHP Curl module to be installed');
         }
 
-        $this->grav = Grav::instance();
-        $this->grav['config']->init();
-        $this->grav['uri']->init();
+        $grav = Grav::instance();
+        $grav['config']->init();
+        $grav['uri']->init();
 
-        $this->inflector    = $this->grav['inflector'];
-        $this->locator      = $this->grav['locator'];
-        $this->twig         = $this->grav['twig'];
+        $this->inflector    = $grav['inflector'];
+        $this->locator      = $grav['locator'];
+        $this->twig         = $grav['twig'];
         $this->gpm          = new GPM(true);
 
         //Add `theme://` to prevent fail
