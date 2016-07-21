@@ -1,3 +1,9 @@
+# v1.0.2
+## 07/20/2016
+
+1. [](#bugfix)
+    * Removed old `header.html.twig`
+    
 # v1.0.1
 ## 05/06/2016
 
