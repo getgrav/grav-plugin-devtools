@@ -1,3 +1,10 @@
+# v1.0.3
+## 09/16/2016
+
+1. [](#bugfix)
+    * Removed `Theme` from theme's class causing events to not process - https://github.com/getgrav/grav/issues/1047
+    * Typo in README.md
+
 # v1.0.2
 ## 07/20/2016
 
