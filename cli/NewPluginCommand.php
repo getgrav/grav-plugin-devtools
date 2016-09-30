@@ -45,6 +45,12 @@ class NewPluginCommand extends DevToolsCommand
                 'The name/username of the developer'
             )
             ->addOption(
+                'githubid',
+                'gh',
+                InputOption::VALUE_OPTIONAL,
+                'The developer\'s GitHub ID'
+            )
+            ->addOption(
                 'email',
                 'e',
                 InputOption::VALUE_OPTIONAL,
@@ -73,7 +79,8 @@ class NewPluginCommand extends DevToolsCommand
             'description'   => $this->input->getOption('description'),
             'author'        => [
                 'name'      => $this->input->getOption('developer'),
-                'email'     => $this->input->getOption('email')
+                'email'     => $this->input->getOption('email'),
+                'githubid'  => $this->input->getOption('githubid')
             ]
         ];
 
@@ -110,6 +117,16 @@ class NewPluginCommand extends DevToolsCommand
             $this->component['author']['name'] = $helper->ask($this->input, $this->output, $question);
         }
 
+
+        if (!$this->options['author']['githubid']) {
+            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank): ');
+            $question->setValidator(function ($value) {
+                return $this->validate('githubid', $value);
+            });
+
+            $this->component['author']['githubid'] = $helper->ask($this->input, $this->output, $question);
+        }
+
         if (!$this->options['author']['email']) {
             $question = new Question('Enter <yellow>Developer Email</yellow>: ');
             $question->setValidator(function ($value) {
@@ -120,6 +137,10 @@ class NewPluginCommand extends DevToolsCommand
         }
 
         $this->component['template'] = 'blank';
+
+        if ( ($this->component['author']['githubid'] === null) || (trim($this->component['author']['githubid']) === '') ) {
+            $this->component['author']['githubid'] = $this->component['author']['name'];
+        }
 
         $this->createComponent();
     }
