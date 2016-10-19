@@ -1,3 +1,10 @@
+# v1.0.4
+## 10/19/2016
+
+1. [](#improved)
+    * More complete README.md
+    * Typo in Error template
+
 # v1.0.3
 ## 09/16/2016
 
