@@ -173,6 +173,10 @@ class DevToolsCommand extends ConsoleCommand
 
                 break;
 
+            case 'githubid':
+                // GitHubID can be blank, so nothing here
+                break;
+
             case 'email':
                 if (!preg_match('/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/', $value)) {
                     throw new \RuntimeException('Not a valid email address');
