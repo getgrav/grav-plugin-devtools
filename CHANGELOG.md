@@ -1,3 +1,11 @@
+# v1.0.5
+## 02/26/2017
+
+1. [](#improved)
+    * Added GitHub ID prompt [#5](https://github.com/getgrav/grav-plugin-devtools/pull/5)
+1. [](#bugfix)
+    * Added missing closing html tag [#12](https://github.com/getgrav/grav-plugin-devtools/pull/12)
+
 # v1.0.4
 ## 10/19/2016
 
@@ -17,7 +25,7 @@
 
 1. [](#bugfix)
     * Removed old `header.html.twig`
-    
+
 # v1.0.1
 ## 05/06/2016
 
