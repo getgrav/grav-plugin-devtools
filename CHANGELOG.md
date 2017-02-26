@@ -1,5 +1,5 @@
 # v1.0.5
-## 02/xx/2017
+## 02/26/2017
 
 1. [](#improved)
     * Added GitHub ID prompt [#5](https://github.com/getgrav/grav-plugin-devtools/pull/5)
