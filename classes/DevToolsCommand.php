@@ -66,6 +66,7 @@ class DevToolsCommand extends ConsoleCommand
 
         //Add `theme://` to prevent fail
         $this->locator->addPath('theme', '', []);
+        $this->locator->addPath('plugin', '', []);
     }
 
     /**
