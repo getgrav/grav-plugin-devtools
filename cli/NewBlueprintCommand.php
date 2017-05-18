@@ -31,8 +31,14 @@ class NewBlueprintCommand extends DevToolsCommand
             ->setName('new-blueprint')
             ->setAliases(['newblueprint'])
             ->addOption(
+                'bpname',
+                'bp',
+                InputOption::VALUE_OPTIONAL,
+                'The name of your new Grav theme'
+            )
+            ->addOption(
                 'name',
-                'pn',
+                'bn',
                 InputOption::VALUE_OPTIONAL,
                 'The name of your new Grav theme'
             )
@@ -51,6 +57,12 @@ class NewBlueprintCommand extends DevToolsCommand
             ->addOption(
                 'developer',
                 'dv',
+                InputOption::VALUE_OPTIONAL,
+                'The name/username of the developer'
+            )
+            ->addOption(
+                'template',
+                'tp',
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
             )
@@ -76,14 +88,17 @@ class NewBlueprintCommand extends DevToolsCommand
          */
         $this->component['type']        = 'blueprint';
         $this->component['template']    = 'modular';
+       // $this->component['name']    = 'blueprints';
         $this->component['version']     = '0.1.0';
         $this->component['themename']     = 'bonjour';
         
 
         $this->options = [
             'name'          => $this->input->getOption('name'),
+            'bpname'          => $this->input->getOption('bpname'),
             'themename'     => $this->input->getOption('themename'),
             'description'   => $this->input->getOption('description'),
+            'template'   => $this->input->getOption('template'),
             'author'        => [
                 'name'      => $this->input->getOption('developer'),
                 'email'     => $this->input->getOption('email')
@@ -96,11 +111,21 @@ class NewBlueprintCommand extends DevToolsCommand
 
         $helper = $this->getHelper('question');
 
-        $question = new ChoiceQuestion(
+        if (!$this->options['template']) {
+            $question = new ChoiceQuestion(
             'Please choose a template type',
-            array('modular', 'newtab')
+            array('newtab', 'append')
         );
-        $this->component['template'] = $helper->ask($this->input, $this->output, $question);
+
+            $this->component['template'] = $helper->ask($this->input, $this->output, $question);
+        }
+        if (!$this->options['bpname']) {
+            $question = new Question('Enter <yellow>Blueprint Name</yellow>: ');
+
+
+            $this->component['bpname'] = $helper->ask($this->input, $this->output, $question);
+        }
+       // $this->component['template'] = $helper->ask($this->input, $this->output, $question);
     
         $this->createComponent();
     }

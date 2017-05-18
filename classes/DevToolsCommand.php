@@ -80,6 +80,7 @@ class DevToolsCommand extends ConsoleCommand
     protected function createComponent()
     {
         $name       = $this->component['name'];
+        $bpname     = $this->component['bpname'];
         $folderName = strtolower($this->inflector->hyphenize($name));
         $type       = $this->component['type'];
         $grav = Grav::instance();
@@ -141,9 +142,14 @@ class DevToolsCommand extends ConsoleCommand
             $this->output->writeln($type . "creation failed!");
             return false;
         }
-
+        if ($type != 'blueprint') {
         rename($componentFolder . DS . $type . '.php', $componentFolder . DS . $this->inflector->hyphenize($name) . '.php');
         rename($componentFolder . DS . $type . '.yaml', $componentFolder . DS . $this->inflector->hyphenize($name) . '.yaml');
+        } else {
+        rename($componentFolder . DS . $type . '.yaml', $componentFolder . DS . $this->inflector->hyphenize($bpname) . '.yaml');
+        }
+
+
 
         $this->output->writeln('');
         $this->output->writeln('<green>SUCCESS</green> ' . $type . ' <magenta>' . $name . '</magenta> -> Created Successfully');
