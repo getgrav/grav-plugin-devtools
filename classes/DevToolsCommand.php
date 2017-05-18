@@ -3,6 +3,7 @@ namespace Grav\Plugin\Console;
 
 use Grav\Common\Grav;
 use Grav\Common\Data;
+use Grav\Common\Theme;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\GPM\GPM;
 use Grav\Common\Inflector;
@@ -67,6 +68,8 @@ class DevToolsCommand extends ConsoleCommand
         //Add `theme://` to prevent fail
         $this->locator->addPath('theme', '', []);
         $this->locator->addPath('plugin', '', []);
+        $this->locator->addPath('blueprint', '', []);
+        $myvar = $this->grav['theme'];
     }
 
     /**
@@ -77,10 +80,11 @@ class DevToolsCommand extends ConsoleCommand
         $name       = $this->component['name'];
         $folderName = strtolower($this->inflector->hyphenize($name));
         $type       = $this->component['type'];
+        
 
         $template   = $this->component['template'];
         $templateFolder     = __DIR__ . '/../components/' . $type . DS . $template;
-        $componentFolder    = $this->locator->findResource($type . 's://') . DS . $folderName;
+        $componentFolder    = $this->locator->findResource($type . 's://') . DS . '../../user/themes/' . $myvar . '/blueprints';
 
         //Copy All files to component folder
         try {
@@ -166,7 +170,12 @@ class DevToolsCommand extends ConsoleCommand
                 }
 
                 break;
+            case 'themename':
+                if($value === null || trim($value) === '') {
+                    throw new \RuntimeException('Theme Name cannot be empty');
+                }
 
+                break;
             case 'developer':
                 if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Developer\'s Name cannot be empty');

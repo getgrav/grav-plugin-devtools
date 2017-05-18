@@ -43,6 +43,12 @@ class NewBlueprintCommand extends DevToolsCommand
                 'A description of your new Grav theme'
             )
             ->addOption(
+                'themename',
+                'tn',
+                InputOption::VALUE_OPTIONAL,
+                'A description of your new Grav theme'
+            )
+            ->addOption(
                 'developer',
                 'dv',
                 InputOption::VALUE_OPTIONAL,
@@ -71,9 +77,12 @@ class NewBlueprintCommand extends DevToolsCommand
         $this->component['type']        = 'blueprint';
         $this->component['template']    = 'modular';
         $this->component['version']     = '0.1.0';
+        $this->component['themename']     = 'bonjour';
+        
 
         $this->options = [
             'name'          => $this->input->getOption('name'),
+            'themename'     => $this->input->getOption('themename'),
             'description'   => $this->input->getOption('description'),
             'author'        => [
                 'name'      => $this->input->getOption('developer'),
@@ -86,20 +95,20 @@ class NewBlueprintCommand extends DevToolsCommand
         $this->component = array_replace($this->component, $this->options);
 
         $helper = $this->getHelper('question');
-         if (!$this->options['name']) {
+         if (!$this->options['themename']) {
             $question = new Question('Enter <yellow>Theme Name</yellow>: ');
             $question->setValidator(function ($value) {
-                return $this->validate('name', $value);
+                return $this->validate('themename', $value);
             });
 
-            $this->component['name'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['themename'] = $helper->ask($this->input, $this->output, $question);
         }
 
         $question = new ChoiceQuestion(
             'Please choose a template type',
-            array('modular', 'modular')
+            array('modular', 'newtest')
         );
-        $this->component['modular'] = $helper->ask($this->input, $this->output, $question);
+        $this->component['template'] = $helper->ask($this->input, $this->output, $question);
     
         $this->createComponent();
     }
