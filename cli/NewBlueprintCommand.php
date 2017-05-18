@@ -95,14 +95,6 @@ class NewBlueprintCommand extends DevToolsCommand
         $this->component = array_replace($this->component, $this->options);
 
         $helper = $this->getHelper('question');
-         if (!$this->options['themename']) {
-            $question = new Question('Enter <yellow>Theme Name</yellow>: ');
-            $question->setValidator(function ($value) {
-                return $this->validate('themename', $value);
-            });
-
-            $this->component['themename'] = $helper->ask($this->input, $this->output, $question);
-        }
 
         $question = new ChoiceQuestion(
             'Please choose a template type',

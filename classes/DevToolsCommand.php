@@ -69,7 +69,9 @@ class DevToolsCommand extends ConsoleCommand
         $this->locator->addPath('theme', '', []);
         $this->locator->addPath('plugin', '', []);
         $this->locator->addPath('blueprint', '', []);
-        $myvar = $this->grav['theme'];
+        // $this->config->set('theme', $config->get('themes.' . $name));
+        
+        
     }
 
     /**
@@ -80,11 +82,29 @@ class DevToolsCommand extends ConsoleCommand
         $name       = $this->component['name'];
         $folderName = strtolower($this->inflector->hyphenize($name));
         $type       = $this->component['type'];
+        $grav = Grav::instance();
+        $config = $grav['config'];
+        $name = $config->get('system.pages.theme');
+        var_dump($grav['themes']->get($name)->blueprints()->get('name'));
+        $myvar = $grav['themes']->get($name)->blueprints()->get('name');
+        //$themes->configure();
+        $lowervar   = strtolower($this->inflector->hyphenize($myvar));
+        //$myvar = $myvarold->$name;
+        dump($lowervar);
+        $finalvar = 'themes' . DS . $lowervar ;
         
 
         $template   = $this->component['template'];
         $templateFolder     = __DIR__ . '/../components/' . $type . DS . $template;
-        $componentFolder    = $this->locator->findResource($type . 's://') . DS . '../../user/themes/' . $myvar . '/blueprints';
+        // $componentFolder    = $this->locator->findResource($type . 's://') . DS . '../../user/themes/' . $lowervar . '/blueprints';
+        if ($type == 'blueprint') {
+            $componentFolder    = USER_DIR . $finalvar . '/blueprints';
+            dump($componentFolder);
+        } else {
+            $componentFolder    = $this->locator->findResource($type . 's://') . DS . $folderName;
+            dump($componentFolder);
+        }
+        
 
         //Copy All files to component folder
         try {
