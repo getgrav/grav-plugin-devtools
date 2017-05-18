@@ -98,7 +98,7 @@ class NewBlueprintCommand extends DevToolsCommand
 
         $question = new ChoiceQuestion(
             'Please choose a template type',
-            array('modular', 'newtest')
+            array('modular', 'newtab')
         );
         $this->component['template'] = $helper->ask($this->input, $this->output, $question);
     

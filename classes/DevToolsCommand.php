@@ -85,20 +85,19 @@ class DevToolsCommand extends ConsoleCommand
         $grav = Grav::instance();
         $config = $grav['config'];
         $name = $config->get('system.pages.theme');
-        var_dump($grav['themes']->get($name)->blueprints()->get('name'));
-        $myvar = $grav['themes']->get($name)->blueprints()->get('name');
+        $activetheme = $grav['themes']->get($name)->blueprints()->get('name');
         //$themes->configure();
-        $lowervar   = strtolower($this->inflector->hyphenize($myvar));
+        $activethemefolder   = 'themes' . DS . strtolower($this->inflector->hyphenize($activetheme));
         //$myvar = $myvarold->$name;
-        dump($lowervar);
-        $finalvar = 'themes' . DS . $lowervar ;
+        // dump($lowervar);
+
         
 
         $template   = $this->component['template'];
         $templateFolder     = __DIR__ . '/../components/' . $type . DS . $template;
         // $componentFolder    = $this->locator->findResource($type . 's://') . DS . '../../user/themes/' . $lowervar . '/blueprints';
         if ($type == 'blueprint') {
-            $componentFolder    = USER_DIR . $finalvar . '/blueprints';
+            $componentFolder    = USER_DIR . $activethemefolder . '/blueprints';
             dump($componentFolder);
         } else {
             $componentFolder    = $this->locator->findResource($type . 's://') . DS . $folderName;
