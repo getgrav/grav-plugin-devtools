@@ -29,7 +29,7 @@ class NewBlueprintCommand extends DevToolsCommand
     {
         $this
             ->setName('new-blueprint')
-            ->setAliases(['newblueprint'])
+            ->setAliases(['newblueprint','blueprint'])
             ->addOption(
                 'bpname',
                 'bp',
@@ -43,34 +43,10 @@ class NewBlueprintCommand extends DevToolsCommand
                 'The name of your new Grav theme'
             )
             ->addOption(
-                'description',
-                'd',
-                InputOption::VALUE_OPTIONAL,
-                'A description of your new Grav theme'
-            )
-            ->addOption(
-                'themename',
-                'tn',
-                InputOption::VALUE_OPTIONAL,
-                'A description of your new Grav theme'
-            )
-            ->addOption(
-                'developer',
-                'dv',
-                InputOption::VALUE_OPTIONAL,
-                'The name/username of the developer'
-            )
-            ->addOption(
                 'template',
                 'tp',
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
-            )
-            ->addOption(
-                'email',
-                'e',
-                InputOption::VALUE_OPTIONAL,
-                'The developer\'s email'
             )
             ->setDescription('Create a blueprint that extend the default.yaml blueprint files')
             ->setHelp('The <info>new-blueprint</info> command creates a new blueprint file.');
@@ -96,13 +72,8 @@ class NewBlueprintCommand extends DevToolsCommand
         $this->options = [
             'name'          => $this->input->getOption('name'),
             'bpname'          => $this->input->getOption('bpname'),
-            'themename'     => $this->input->getOption('themename'),
-            'description'   => $this->input->getOption('description'),
             'template'   => $this->input->getOption('template'),
-            'author'        => [
-                'name'      => $this->input->getOption('developer'),
-                'email'     => $this->input->getOption('email')
-            ]
+
         ];
 
         $this->validateOptions();
