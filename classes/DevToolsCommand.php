@@ -3,6 +3,7 @@ namespace Grav\Plugin\Console;
 
 use Grav\Common\Grav;
 use Grav\Common\Data;
+use Grav\Common\Theme;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\GPM\GPM;
 use Grav\Common\Inflector;
@@ -66,6 +67,11 @@ class DevToolsCommand extends ConsoleCommand
 
         //Add `theme://` to prevent fail
         $this->locator->addPath('theme', '', []);
+        $this->locator->addPath('plugin', '', []);
+        $this->locator->addPath('blueprint', '', []);
+        // $this->config->set('theme', $config->get('themes.' . $name));
+        
+        
     }
 
     /**
@@ -74,12 +80,31 @@ class DevToolsCommand extends ConsoleCommand
     protected function createComponent()
     {
         $name       = $this->component['name'];
+        $bpname     = $this->component['bpname'];
         $folderName = strtolower($this->inflector->hyphenize($name));
         $type       = $this->component['type'];
+        $grav = Grav::instance();
+        $config = $grav['config'];
+        $name = $config->get('system.pages.theme');
+        $activetheme = $grav['themes']->get($name)->blueprints()->get('name');
+        //$themes->configure();
+        $activethemefolder   = 'themes' . DS . strtolower($this->inflector->hyphenize($activetheme));
+        //$myvar = $myvarold->$name;
+        // dump($lowervar);
+
+        
 
         $template   = $this->component['template'];
         $templateFolder     = __DIR__ . '/../components/' . $type . DS . $template;
-        $componentFolder    = $this->locator->findResource($type . 's://') . DS . $folderName;
+        // $componentFolder    = $this->locator->findResource($type . 's://') . DS . '../../user/themes/' . $lowervar . '/blueprints';
+        if ($type == 'blueprint') {
+            $componentFolder    = USER_DIR . $activethemefolder . '/blueprints';
+            dump($componentFolder);
+        } else {
+            $componentFolder    = $this->locator->findResource($type . 's://') . DS . $folderName;
+            dump($componentFolder);
+        }
+        
 
         //Copy All files to component folder
         try {
@@ -117,9 +142,14 @@ class DevToolsCommand extends ConsoleCommand
             $this->output->writeln($type . "creation failed!");
             return false;
         }
-
+        if ($type != 'blueprint') {
         rename($componentFolder . DS . $type . '.php', $componentFolder . DS . $this->inflector->hyphenize($name) . '.php');
         rename($componentFolder . DS . $type . '.yaml', $componentFolder . DS . $this->inflector->hyphenize($name) . '.yaml');
+        } else {
+        rename($componentFolder . DS . $type . '.yaml', $componentFolder . DS . $this->inflector->hyphenize($bpname) . '.yaml');
+        }
+
+
 
         $this->output->writeln('');
         $this->output->writeln('<green>SUCCESS</green> ' . $type . ' <magenta>' . $name . '</magenta> -> Created Successfully');
@@ -165,7 +195,12 @@ class DevToolsCommand extends ConsoleCommand
                 }
 
                 break;
+            case 'themename':
+                if($value === null || trim($value) === '') {
+                    throw new \RuntimeException('Theme Name cannot be empty');
+                }
 
+                break;
             case 'developer':
                 if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Developer\'s Name cannot be empty');
