@@ -1,3 +1,9 @@
+# v1.0.8
+## 10/02/2017
+
+1. [](#bugfix)
+    inherited theme is after new theme [#9](https://github.com/getgrav/grav-plugin-devtools/issues/9)
+
 # v1.0.7
 ## 10/02/2017
 
