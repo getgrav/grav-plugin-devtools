@@ -1,3 +1,9 @@
+# v1.0.7
+## 10/02/2017
+
+1. [](#bugfix)
+    * Various fixes for things that broke with the blueprint generation PR [#20](https://github.com/getgrav/grav-plugin-devtools/issues/20)
+
 # v1.0.6
 ## 09/28/2017
 
