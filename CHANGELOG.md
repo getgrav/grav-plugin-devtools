@@ -1,3 +1,14 @@
+# v1.1.0
+##  mm/dd/2018
+
+1. [](#new)
+    * Added new Theme `copy` option to create a new theme from another
+1. [](#improved)
+    * Stop flushing GPM cache on each call to speed things up considerably!   
+1. [](#bugfix)
+    * Updated README.md [#23](https://github.com/getgrav/grav-plugin-devtools/pull/23)
+    * Properly extend Theme or Plugin [#24](https://github.com/getgrav/grav-plugin-devtools/pull/24) 
+
 # v1.0.8
 ## 10/02/2017
 
