@@ -63,7 +63,7 @@ class DevToolsCommand extends ConsoleCommand
         $this->inflector    = $grav['inflector'];
         $this->locator      = $grav['locator'];
         $this->twig         = $grav['twig'];
-        $this->gpm          = new GPM(true);
+        $this->gpm          = new GPM();
 
         //Add `theme://` to prevent fail
         $this->locator->addPath('theme', '', []);
