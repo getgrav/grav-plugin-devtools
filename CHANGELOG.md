@@ -1,5 +1,11 @@
+# v1.1.1
+## 03/29/2018
+   
+1. [](#bugfix)
+    * Fixed theme inheritance bug [#25](https://github.com/getgrav/grav-plugin-devtools/pull/25)
+
 # v1.1.0
-##  03/29/2018
+## 03/29/2018
 
 1. [](#new)
     * Added new Theme `copy` option to create a new theme from another
