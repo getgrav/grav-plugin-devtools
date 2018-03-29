@@ -124,8 +124,8 @@ class NewThemeCommand extends DevToolsCommand
         }
 
         $question = new ChoiceQuestion(
-            'Please choose a template type',
-            array('pure-blank', 'inheritence')
+            'Please choose an option',
+            array('pure-blank' => 'Basic Theme using Pure.css', 'inheritence' => 'Inherit from another theme', 'copy' => 'Copy another theme')
         );
         $this->component['template'] = $helper->ask($this->input, $this->output, $question);
 
@@ -140,6 +140,17 @@ class NewThemeCommand extends DevToolsCommand
                 $installedThemes
             );
             $this->component['extends'] = $helper->ask($this->input, $this->output, $question);
+        } elseif ($this->component['template'] == 'copy') {
+            $themes = $this->gpm->getInstalledThemes();
+            $installedThemes = [];
+            foreach($themes as $key => $theme) {
+                array_push($installedThemes, $key);
+            }
+            $question = new ChoiceQuestion(
+                'Please choose a theme to copy: ',
+                $installedThemes
+            );
+            $this->component['copy'] = $helper->ask($this->input, $this->output, $question);
         }
         $this->createComponent();
     }

@@ -63,7 +63,7 @@ class DevToolsCommand extends ConsoleCommand
         $this->inflector    = $grav['inflector'];
         $this->locator      = $grav['locator'];
         $this->twig         = $grav['twig'];
-        $this->gpm          = new GPM(true);
+        $this->gpm          = new GPM();
 
         //Add `theme://` to prevent fail
         $this->locator->addPath('theme', '', []);
@@ -81,12 +81,20 @@ class DevToolsCommand extends ConsoleCommand
     {
         $name = $this->component['name'];
         $folder_name = strtolower($this->inflector->hyphenize($name));
+        $new_theme = $folder_name;
         $type = $this->component['type'];
         $grav = Grav::instance();
         $config = $grav['config'];
         $current_theme = $config->get('system.pages.theme');
         $template = $this->component['template'];
-        $template_folder = __DIR__ . '/../components/' . $type . DS . $template;
+        $source_theme = null;
+
+        if (isset($this->component['copy'])) {
+            $source_theme = $this->locator->findResource('themes://' . $this->component['copy']);
+            $template_folder = $source_theme;
+        } else {
+            $template_folder = __DIR__ . '/../components/' . $type . DS . $template;
+        }
 
         if ($type == 'blueprint') {
             $component_folder = $this->locator->findResource('themes://' . $current_theme) . '/blueprints';
@@ -94,49 +102,112 @@ class DevToolsCommand extends ConsoleCommand
             $component_folder = $this->locator->findResource($type . 's://') . DS . $folder_name;
         }
 
-        //Copy All files to component folder
-        try {
-            Folder::copy($template_folder, $component_folder);
-        } catch (\Exception $e) {
-            $this->output->writeln("<red>" . $e->getMessage() . "</red>");
-            return false;
-        }
 
-        //Add Twig vars and templates then initialize
-        $this->twig->twig_vars['component'] = $this->component;
-        $this->twig->twig_paths[] = $template_folder;
-        $this->twig->init();
 
-        //Get all templates of component then process each with twig and save
-        $templates = Folder::all($component_folder);
+        if (isset($source_theme)) {
+            /**
+             * Copy existing theme and regex-replace old stuff with new
+             */
 
-        try {
-            foreach($templates as $templateFile) {
-                if (Utils::endsWith($templateFile, '.twig') && !Utils::endsWith($templateFile, '.html.twig')) {
-                    $content = $this->twig->processTemplate($templateFile);
-                    $file = File::instance($component_folder . DS . str_replace('.twig', '', $templateFile));
-                    $file->content($content);
-                    $file->save();
-
-                    //Delete twig template
-                    $file = File::instance($component_folder . DS . $templateFile);
-                    $file->delete();
-                }
+            // Get source if a symlink
+            if (is_link($template_folder)) {
+                $template_folder = readlink($template_folder);
             }
-        } catch (\Exception $e) {
-            $this->output->writeln("<red>" . $e->getMessage() . "</red>");
-            $this->output->writeln("Rolling back...");
-            Folder::delete($component_folder);
-            $this->output->writeln($type . "creation failed!");
-            return false;
-        }
-        if ($type != 'blueprint') {
-            rename($component_folder . DS . $type . '.php', $component_folder . DS . $folder_name . '.php');
-            rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $folder_name . '.yaml');
+
+            //Copy All files to component folder
+            try {
+                Folder::copy($template_folder, $component_folder, '/.git|node_modules/');
+            } catch (\Exception $e) {
+                $this->output->writeln("<red>" . $e->getMessage() . "</red>");
+                return false;
+            }
+
+            // Do some filename renaming
+            $base_old_filename = $component_folder . '/' . $current_theme;
+            $base_new_filename = $component_folder . '/' . $new_theme;
+            @rename( $base_old_filename . '.php', $base_new_filename . '.php');
+            @rename( $base_old_filename . '.yaml', $base_new_filename . '.yaml');
+
+            $regex_array = [
+                $new_theme . '.php' => [
+                    ['/class ' . $this->inflector->camelize($current_theme) . ' extends/i'],
+                    ['class ' . $this->inflector->camelize($name) . ' extends']
+                ],
+                'blueprints.yaml' => [
+                     ['/'.$this->inflector->camelize($current_theme).'/', '/'.$this->inflector->hyphenize($current_theme).'/', '/'.$this->inflector->titleize($current_theme).'/', '/'.$this->inflector->underscorize($current_theme).'/'],
+                     [$this->inflector->camelize($name), $this->inflector->hyphenize($name),$this->inflector->titleize($name), $this->inflector->underscorize($name)]
+                ],
+                'README.md' => [
+                     ['/'.$this->inflector->camelize($current_theme).'/', '/'.$this->inflector->hyphenize($current_theme).'/', '/'.$this->inflector->titleize($current_theme).'/', '/'.$this->inflector->underscorize($current_theme).'/'],
+                     [$this->inflector->camelize($name), $this->inflector->hyphenize($name),$this->inflector->titleize($name), $this->inflector->underscorize($name)]
+                ]
+
+            ];
+
+            foreach ($regex_array as $filename => $data) {
+                $filename = $component_folder . '/' . $filename;
+                if (!file_exists($filename)) {
+                    continue;
+                }
+                $file = file_get_contents($filename);
+                if ($file) {
+                    $file = preg_replace($data[0], $data[1], $file);
+                }
+                file_put_contents($filename, $file);
+            }
+
+            echo $source_theme;
+
         } else {
-            $bpname = $this->inflector->hyphenize($this->component['bpname']);
-            rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $bpname . '.yaml');
+            /**
+             * Use components folder and twig processing
+             */
+            //Copy All files to component folder
+            try {
+                Folder::copy($template_folder, $component_folder);
+            } catch (\Exception $e) {
+                $this->output->writeln("<red>" . $e->getMessage() . "</red>");
+                return false;
+            }
+
+            //Add Twig vars and templates then initialize
+            $this->twig->twig_vars['component'] = $this->component;
+            $this->twig->twig_paths[] = $template_folder;
+            $this->twig->init();
+
+            //Get all templates of component then process each with twig and save
+            $templates = Folder::all($component_folder);
+
+            try {
+                foreach($templates as $templateFile) {
+                    if (Utils::endsWith($templateFile, '.twig') && !Utils::endsWith($templateFile, '.html.twig')) {
+                        $content = $this->twig->processTemplate($templateFile);
+                        $file = File::instance($component_folder . DS . str_replace('.twig', '', $templateFile));
+                        $file->content($content);
+                        $file->save();
+
+                        //Delete twig template
+                        $file = File::instance($component_folder . DS . $templateFile);
+                        $file->delete();
+                    }
+                }
+            } catch (\Exception $e) {
+                $this->output->writeln("<red>" . $e->getMessage() . "</red>");
+                $this->output->writeln("Rolling back...");
+                Folder::delete($component_folder);
+                $this->output->writeln($type . "creation failed!");
+                return false;
+            }
+            if ($type != 'blueprint') {
+                rename($component_folder . DS . $type . '.php', $component_folder . DS . $folder_name . '.php');
+                rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $folder_name . '.yaml');
+            } else {
+                $bpname = $this->inflector->hyphenize($this->component['bpname']);
+                rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $bpname . '.yaml');
+            }
         }
+
+
 
         $this->output->writeln('');
         $this->output->writeln('<green>SUCCESS</green> ' . $type . ' <magenta>' . $name . '</magenta> -> Created Successfully');
