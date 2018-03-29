@@ -1,5 +1,5 @@
 # v1.1.0
-##  mm/dd/2018
+##  03/29/2018
 
 1. [](#new)
     * Added new Theme `copy` option to create a new theme from another
