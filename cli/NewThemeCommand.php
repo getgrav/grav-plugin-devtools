@@ -125,11 +125,11 @@ class NewThemeCommand extends DevToolsCommand
 
         $question = new ChoiceQuestion(
             'Please choose an option',
-            array('pure-blank' => 'Basic Theme using Pure.css', 'inheritence' => 'Inherit from another theme', 'copy' => 'Copy another theme')
+            array('pure-blank' => 'Basic Theme using Pure.css', 'inheritance' => 'Inherit from another theme', 'copy' => 'Copy another theme')
         );
         $this->component['template'] = $helper->ask($this->input, $this->output, $question);
 
-        if ($this->component['template'] == 'inheritence') {
+        if ($this->component['template'] == 'inheritance') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
             foreach($themes as $key => $theme) {
