@@ -62,7 +62,8 @@
 {% endblock %}
 
 {% block bottom %}
-    {{ assets.js('bottom') }}
+    {% do assets.addJs('theme://js/scriptname.js') %}
+    {{ assets.js() }}
 {% endblock %}
 
 </body>
