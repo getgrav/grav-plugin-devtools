@@ -1,6 +1,8 @@
-# v1.1.2
+# v1.2.0
 ## 03/29/2018
 
+1. [](#new)
+    * Internationalization for blank plugin component [#30](https://github.com/getgrav/grav-plugin-devtools/issues/30)
 1. [](#improved)
     * Added a new check for reserved PHP words [#7](https://github.com/getgrav/grav-plugin-devtools/issues/7) 
     * Improved regex for valid emails [#21](https://github.com/getgrav/grav-plugin-devtools/issues/21) 
