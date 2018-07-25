@@ -1,5 +1,5 @@
 # v1.2.0
-## 03/29/2018
+## 07/25/2018
 
 1. [](#new)
     * Internationalization for blank plugin component [#30](https://github.com/getgrav/grav-plugin-devtools/issues/30)
