@@ -46,6 +46,11 @@ class DevToolsCommand extends ConsoleCommand
      */
     protected $gpm;
 
+    /**
+     * @var array
+     */
+    protected $reserved_keywords = array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor');
+
 
     /**
      * Initializes the basic requirements for the developer tools
@@ -88,6 +93,13 @@ class DevToolsCommand extends ConsoleCommand
         $current_theme = $config->get('system.pages.theme');
         $template = $this->component['template'];
         $source_theme = null;
+
+        // Check if it's reserved
+        if ($this->isReservedWord(strtolower($name))) {
+            $this->output->writeln("<red>\"" . $name . "\" is a reserved word and cannot be used as the name.</red>");
+            return false;
+
+        }
 
         if (isset($this->component['copy'])) {
             $source_theme = $this->locator->findResource('themes://' . $this->component['copy']);
@@ -279,5 +291,13 @@ class DevToolsCommand extends ConsoleCommand
         }
 
         return $value;
+    }
+
+    public function isReservedWord($word)
+    {
+        if (in_array($word, $this->reserved_keywords)) {
+            return true;
+        }
+        return false;
     }
 }
