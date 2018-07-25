@@ -17,15 +17,15 @@ form:
   fields:
     enabled:
       type: toggle
-      label: Plugin status
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
       highlight: 1
       default: 0
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
     text_var:
       type: text
-      label: Text Variable
-      help: Text to add to the top of a page
+      label: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE
+      help: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE_HELP

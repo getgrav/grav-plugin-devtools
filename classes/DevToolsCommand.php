@@ -46,6 +46,11 @@ class DevToolsCommand extends ConsoleCommand
      */
     protected $gpm;
 
+    /**
+     * @var array
+     */
+    protected $reserved_keywords = array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor');
+
 
     /**
      * Initializes the basic requirements for the developer tools
@@ -90,7 +95,8 @@ class DevToolsCommand extends ConsoleCommand
         $source_theme = null;
 
         if (isset($this->component['copy'])) {
-            $source_theme = $this->locator->findResource('themes://' . $this->component['copy']);
+            $current_theme = $this->component['copy'];
+            $source_theme = $this->locator->findResource('themes://' . $current_theme);
             $template_folder = $source_theme;
         } else {
             $template_folder = __DIR__ . '/../components/' . $type . DS . $template;
@@ -245,6 +251,11 @@ class DevToolsCommand extends ConsoleCommand
                     throw new \RuntimeException('Package name exists in GPM');
                 }
 
+                // Check if it's reserved
+                if ($this->isReservedWord(strtolower($value))) {
+                    throw new \RuntimeException("\"" . $value . "\" is a reserved word and cannot be used as the name");
+                }
+
                 break;
 
             case 'description':
@@ -271,7 +282,7 @@ class DevToolsCommand extends ConsoleCommand
                 break;
 
             case 'email':
-                if (!preg_match('/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/', $value)) {
+                if (!preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD', $value)) {
                     throw new \RuntimeException('Not a valid email address');
                 }
 
@@ -279,5 +290,13 @@ class DevToolsCommand extends ConsoleCommand
         }
 
         return $value;
+    }
+
+    public function isReservedWord($word)
+    {
+        if (in_array($word, $this->reserved_keywords)) {
+            return true;
+        }
+        return false;
     }
 }
