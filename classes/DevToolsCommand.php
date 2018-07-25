@@ -95,7 +95,8 @@ class DevToolsCommand extends ConsoleCommand
         $source_theme = null;
 
         if (isset($this->component['copy'])) {
-            $source_theme = $this->locator->findResource('themes://' . $this->component['copy']);
+            $current_theme = $this->component['copy'];
+            $source_theme = $this->locator->findResource('themes://' . $current_theme);
             $template_folder = $source_theme;
         } else {
             $template_folder = __DIR__ . '/../components/' . $type . DS . $template;

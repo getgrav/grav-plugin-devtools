@@ -7,6 +7,7 @@
     * Added a new check for reserved PHP words [#7](https://github.com/getgrav/grav-plugin-devtools/issues/7) 
     * Improved regex for valid emails [#21](https://github.com/getgrav/grav-plugin-devtools/issues/21) 
 1. [](#bugfix)
+    * Fix broken renaming when doing a theme 'copy'
     * Typos [#31](https://github.com/getgrav/grav-plugin-devtools/pull/31)
 
 # v1.1.1
