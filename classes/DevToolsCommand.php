@@ -94,13 +94,6 @@ class DevToolsCommand extends ConsoleCommand
         $template = $this->component['template'];
         $source_theme = null;
 
-        // Check if it's reserved
-        if ($this->isReservedWord(strtolower($name))) {
-            $this->output->writeln("<red>\"" . $name . "\" is a reserved word and cannot be used as the name.</red>");
-            return false;
-
-        }
-
         if (isset($this->component['copy'])) {
             $source_theme = $this->locator->findResource('themes://' . $this->component['copy']);
             $template_folder = $source_theme;
@@ -255,6 +248,11 @@ class DevToolsCommand extends ConsoleCommand
                 }
                 if (false !== $this->gpm->findPackage($value)) {
                     throw new \RuntimeException('Package name exists in GPM');
+                }
+
+                // Check if it's reserved
+                if ($this->isReservedWord(strtolower($value))) {
+                    throw new \RuntimeException("\"" . $value . "\" is a reserved word and cannot be used as the name");
                 }
 
                 break;
