@@ -61,7 +61,7 @@ There are **three template creation options**
 
 1. `pure-blank` - This is a very basic blank theme that uses the [Pure CSS framework](http://purecss.io/)
 2. `inheritance` - This creates a very basic template with minimal files that inherits a base theme.  To find out more about theme inheritance, [check out the subject in more details on the Grav Learn site](https://learn.getgrav.org/themes/customization#theme-inheritance).
-3. 'copy' - This allows you to create a new theme based on an existing theme.  This is the simplest way to get started with a new theme by using another theme as the basis.
+3. `copy` - This allows you to create a new theme based on an existing theme.  This is the simplest way to get started with a new theme by using another theme as the basis.
 
 
 
