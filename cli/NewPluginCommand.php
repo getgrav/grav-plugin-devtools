@@ -138,10 +138,6 @@ class NewPluginCommand extends DevToolsCommand
 
         $this->component['template'] = 'blank';
 
-        if ( ($this->component['author']['githubid'] === null) || (trim($this->component['author']['githubid']) === '') ) {
-            $this->component['author']['githubid'] = $this->component['author']['name'];
-        }
-
         $this->createComponent();
     }
 
