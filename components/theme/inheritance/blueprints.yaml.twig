@@ -1,3 +1,4 @@
+{% set githubid = component.author.githubid ?: component.author.name|hyphenize -%}
 name: {{ component.name|titleize }}
 version: 0.1.0
 description: {{ component.description }}
@@ -5,10 +6,9 @@ icon: rebel
 author:
   name: {{ component.author.name }}
   email: {{ component.author.email }}
-homepage: https://github.com/{{ component.author.name|hyphenize }}/grav-theme-{{ component.name|hyphenize }}
+homepage: https://github.com/{{ githubid }}/grav-theme-{{ component.name|hyphenize }}
 demo: http://demo.yoursite.com
 keywords: grav, theme, etc
-bugs: https://github.com/{{ component.author.name|hyphenize }}/grav-theme-{{ component.name|hyphenize }}/issues
-readme: https://github.com/{{ component.author.name|hyphenize }}/grav-theme-{{ component.name|hyphenize }}/blob/develop/README.md
-docs: https://github.com/{{ component.author.name|hyphenize }}/grav-theme-{{ component.name|hyphenize }}/blob/develop/README.md
+bugs: https://github.com/{{ githubid }}/grav-theme-{{ component.name|hyphenize }}/issues
+readme: https://github.com/{{ githubid }}/grav-theme-{{ component.name|hyphenize }}/blob/develop/README.md
 license: MIT
