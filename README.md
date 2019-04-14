@@ -29,6 +29,7 @@ To create a new plugin you simply need to run: `bin/plugin devtools newplugin` a
 Enter Plugin Name: MyPlugin
 Enter Plugin Description: My New Custom Plugin
 Enter Developer Name: Johnny Rotten
+Enter GitHub ID (can be blank): pretty-vacant
 Enter Developer Email: johnny@rotten.com
 
 SUCCESS plugin myplugin -> Created Successfully
@@ -45,6 +46,7 @@ To create a new theme you simply need to run: `bin/plugin devtools new-theme` an
 Enter Theme Name: MyTheme
 Enter Theme Description: My New Custom Theme
 Enter Developer Name: Johnny Rotten
+Enter GitHub ID (can be blank): pretty-vacant
 Enter Developer Email: johnny@rotten.com
 Please choose a template type
   [pure-blank ] Basic Theme using Pure.css
