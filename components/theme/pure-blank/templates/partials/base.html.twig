@@ -18,12 +18,15 @@
         {% do assets.addCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', 99) %}
         {% do assets.addCss('theme://css/custom.css', 98) %}
     {% endblock %}
-    {{ assets.css() }}
 
     {% block javascripts %}
         {% do assets.addJs('jquery', 100) %}
     {% endblock %}
-    {{ assets.js() }}
+
+    {% block assets %}
+        {{ assets.css() }}
+        {{ assets.js() }}
+    {% endblock %}
 
 {% endblock head%}
 </head>
