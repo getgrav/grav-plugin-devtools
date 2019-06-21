@@ -1,3 +1,11 @@
+# v1.2.3
+## 06/20/2019
+
+1. [](#improved)
+    * pure-blank: Use new 'deferred' blocks for header
+    * pure-blank: Use `home_url` variable
+    * pure-blank: Improved `README.md.twig`
+
 # v1.2.2
 ## 04/21/2019
 
