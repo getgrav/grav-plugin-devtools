@@ -1,6 +1,8 @@
 # v1.2.2
 ## 04/21/2019
 
+1. [](#improved)
+    * Use new 'deferred' blocks for header in `pure-blank`
 1. [](#bugfix)
     * Add Github username field to new-theme template [#39](https://github.com/getgrav/grav-plugin-devtools/pull/39)
 
