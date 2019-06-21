@@ -3,6 +3,7 @@
 
 1. [](#improved)
     * Use new 'deferred' blocks for header in `pure-blank`
+    * Use `home_url` variable
 1. [](#bugfix)
     * Add Github username field to new-theme template [#39](https://github.com/getgrav/grav-plugin-devtools/pull/39)
 
