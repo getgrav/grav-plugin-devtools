@@ -1,9 +1,14 @@
+# v1.2.3
+## 06/20/2019
+
+1. [](#improved)
+    * pure-blank: Use new 'deferred' blocks for header
+    * pure-blank: Use `home_url` variable
+    * pure-blank: Improved `README.md.twig`
+
 # v1.2.2
 ## 04/21/2019
 
-1. [](#improved)
-    * Use new 'deferred' blocks for header in `pure-blank`
-    * Use `home_url` variable
 1. [](#bugfix)
     * Add Github username field to new-theme template [#39](https://github.com/getgrav/grav-plugin-devtools/pull/39)
 
