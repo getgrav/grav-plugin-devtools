@@ -1,3 +1,10 @@
+# v1.2.4
+## 10/15/2019
+
+1. [](#improved)
+    * Added the ability to use devtools without an online connection to GPM
+
+
 # v1.2.3
 ## 06/20/2019
 

@@ -241,14 +241,24 @@ class DevToolsCommand extends ConsoleCommand
      */
     protected function validate($type, $value, $extra = '')
     {
+        $grav = Grav::instance();
+        $config = $grav['config'];
         switch ($type) {
             case 'name':
-                //Check If name
+                // Check If name
                 if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Name cannot be empty');
                 }
-                if (false !== $this->gpm->findPackage($value)) {
-                    throw new \RuntimeException('Package name exists in GPM');
+
+                // Check for name collision with online gpm.
+                $collision_check = $config->get('plugins.devtools.collision_check');
+                if ( $collision_check == true) {
+                    if (false !== $this->gpm->findPackage($value)) {
+                        throw new \RuntimeException('Package name exists in GPM');
+                    }
+                } else {
+                    $this->output->writeln('<red>Warning</red>: Devtools is configured for "<cyan>collision_check</cyan>: <red>false</red>".');
+                    $this->output->writeln('Please be aware that your project\'s plugin or theme name may conflict with an existing plugin or theme.');
                 }
 
                 // Check if it's reserved

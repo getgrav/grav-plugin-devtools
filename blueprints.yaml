@@ -24,4 +24,13 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-
+    collision_check:
+      type: toggle
+      label: PLUGIN_DEVTOOLS.COLLISION_CHECK
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
