@@ -18,6 +18,10 @@ You should now have all the plugin files under
 
 	/your/site/grav/user/plugins/devtools
 	
+## Configuration
+
+By default, devtools will perform a check with the online gpm repository to ensure name-collision avoidance. If you wish to not perform this online check, change the devtools.yaml at `user/config/plugins` from `collision_check: true` to `collision_check: false`.
+
 # Usage
 
 ## Plugin Scaffolding
