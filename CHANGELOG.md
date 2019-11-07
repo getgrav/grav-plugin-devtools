@@ -1,3 +1,9 @@
+# v1.2.4
+## 11/06/2019
+
+1. [](#bugfix)
+    * Regression fix for missing `theme_config` in pure-blank [#45](https://github.com/getgrav/grav-plugin-devtools/issues/45)
+
 # v1.2.3
 ## 06/20/2019
 
