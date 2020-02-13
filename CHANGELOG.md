@@ -1,3 +1,9 @@
+# v1.3.0
+## 02/13/2020
+
+1. [](#improved)
+    * Added composer-based autoloader to the `new-plugin` command
+
 # v1.2.4
 ## 11/06/2019
 
