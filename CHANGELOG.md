@@ -1,3 +1,9 @@
+# v1.3.1
+## mm/dd/2020
+
+1. [](#improved)
+    * Add Grav 1.6 dependency to all new plugins and themes
+
 # v1.3.0
 ## 02/13/2020
 
