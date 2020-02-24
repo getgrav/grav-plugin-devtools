@@ -1,5 +1,5 @@
 # v1.3.1
-## mm/dd/2020
+## 02/24/2020
 
 1. [](#improved)
     * Set `validation: loose` in plugin blueprints by default
