@@ -1,5 +1,5 @@
 name: DevTools
-version: 1.3.0
+version: 1.3.1
 description: Plugin and Theme scaffolding utilities
 icon: cogs
 author:
@@ -10,6 +10,9 @@ homepage: https://github.com/getgrav/grav-plugin-devtools
 keywords: devtools, plugin, theme
 bugs: https://github.com/getgrav/grav-plugin-devtools/issues
 license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.6.0' }
 
 form:
   validation: strict

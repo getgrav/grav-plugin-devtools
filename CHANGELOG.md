@@ -1,3 +1,10 @@
+# v1.3.1
+## 02/24/2020
+
+1. [](#improved)
+    * Set `validation: loose` in plugin blueprints by default
+    * Add Grav 1.6 dependency to all new plugins and themes
+
 # v1.3.0
 ## 02/13/2020
 
