@@ -2,6 +2,7 @@
 ## mm/dd/2020
 
 1. [](#improved)
+    * Set `validation: loose` in plugin blueprints by default
     * Add Grav 1.6 dependency to all new plugins and themes
 
 # v1.3.0
