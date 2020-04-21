@@ -1,3 +1,9 @@
+# v1.3.2
+## mm/dd/2020
+
+1. [](#new)
+    * Added new required `slug:` and `type:` attributes to blueprints
+
 # v1.3.1
 ## 02/24/2020
 
