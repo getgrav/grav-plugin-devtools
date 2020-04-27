@@ -1,8 +1,10 @@
-# v1.3.2
-## mm/dd/2020
+# v1.4.0
+## 04/27/2020
 
 1. [](#new)
     * Added new required `slug:` and `type:` attributes to blueprints
+1. [](#improved)
+    * Fixed plugin autoload
 
 # v1.3.1
 ## 02/24/2020
