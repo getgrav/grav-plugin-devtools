@@ -145,7 +145,7 @@ class NewThemeCommand extends DevToolsCommand
         );
         $this->component['template'] = $helper->ask($this->input, $this->output, $question);
 
-        if ($this->component['template'] == 'inheritance') {
+        if ($this->component['template'] === 'inheritance') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
             foreach($themes as $key => $theme) {
@@ -156,7 +156,7 @@ class NewThemeCommand extends DevToolsCommand
                 $installedThemes
             );
             $this->component['extends'] = $helper->ask($this->input, $this->output, $question);
-        } elseif ($this->component['template'] == 'copy') {
+        } elseif ($this->component['template'] === 'copy') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
             foreach($themes as $key => $theme) {

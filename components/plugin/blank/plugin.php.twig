@@ -23,8 +23,10 @@ class {{ component.name|camelize }}Plugin extends Plugin
     public static function getSubscribedEvents()
     {
         return [
-            ['autoload', 100000], // TODO: Remove when plugin requires Grav >=1.7
-            'onPluginsInitialized' => ['onPluginsInitialized', 0]
+            'onPluginsInitialized' => [
+                ['autoload', 100000], // TODO: Remove when plugin requires Grav >=1.7
+                ['onPluginsInitialized', 0]
+            ]
         ];
     }
 

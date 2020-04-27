@@ -2,8 +2,6 @@
 namespace Grav\Plugin\Console;
 
 use Grav\Common\Grav;
-use Grav\Common\Data;
-use Grav\Common\Theme;
 use Grav\Common\Filesystem\Folder;
 use Grav\Common\GPM\GPM;
 use Grav\Common\Inflector;
@@ -11,6 +9,7 @@ use Grav\Common\Twig\Twig;
 use Grav\Common\Utils;
 use RocketTheme\Toolbox\File\File;
 use Grav\Console\ConsoleCommand;
+use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
 /**
  * Class DevToolsCommand
@@ -30,7 +29,7 @@ class DevToolsCommand extends ConsoleCommand
     protected $inflector;
 
     /**
-     * @var Locator
+     * @var UniformResourceLocator
      */
     protected $locator;
 
@@ -102,7 +101,7 @@ class DevToolsCommand extends ConsoleCommand
             $template_folder = __DIR__ . '/../components/' . $type . DS . $template;
         }
 
-        if ($type == 'blueprint') {
+        if ($type === 'blueprint') {
             $component_folder = $this->locator->findResource('themes://' . $current_theme) . '/blueprints';
         } else {
             $component_folder = $this->locator->findResource($type . 's://') . DS . $folder_name;
@@ -204,7 +203,7 @@ class DevToolsCommand extends ConsoleCommand
                 $this->output->writeln($type . "creation failed!");
                 return false;
             }
-            if ($type != 'blueprint') {
+            if ($type !== 'blueprint') {
                 rename($component_folder . DS . $type . '.php', $component_folder . DS . $folder_name . '.php');
                 rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $folder_name . '.yaml');
             } else {
@@ -224,6 +223,8 @@ class DevToolsCommand extends ConsoleCommand
             $this->output->writeln('<yellow>Make sure to run `composer update` to initialize the autoloader</yellow>');
             $this->output->writeln('');
         }
+
+        return true;
     }
 
     /**
@@ -308,7 +309,7 @@ class DevToolsCommand extends ConsoleCommand
 
     public function isReservedWord($word)
     {
-        if (in_array($word, $this->reserved_keywords)) {
+        if (in_array($word, $this->reserved_keywords, true)) {
             return true;
         }
         return false;
