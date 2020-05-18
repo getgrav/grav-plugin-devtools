@@ -1,6 +1,6 @@
 {% set githubid = component.author.githubid ?: component.author.name|hyphenize -%}
 {
-  "name": "{{ githubid }}/{{ component.name|hyphenize }}",
+  "name": "{{ githubid|lower }}/{{ component.name|hyphenize }}",
   "type": "grav-plugin",
   "description": "{{ component.description }}",
   "keywords": ["plugin"],
