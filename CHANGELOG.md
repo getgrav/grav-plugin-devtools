@@ -1,5 +1,5 @@
 # v1.4.1
-## mm/dd/2020
+## 05/20/2020
 
 1. [](#improved)
     * Make name key Composer 2.0 compatible [#48](https://github.com/getgrav/grav-plugin-devtools/pull/48)
