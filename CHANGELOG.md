@@ -1,3 +1,11 @@
+# v1.4.1
+## 05/20/2020
+
+1. [](#improved)
+    * Make name key Composer 2.0 compatible [#48](https://github.com/getgrav/grav-plugin-devtools/pull/48)
+1. [](#bugfix)
+    * Correct type for themes [#49](https://github.com/getgrav/grav-plugin-devtools/pull/49)
+
 # v1.4.0
 ## 04/27/2020
 
