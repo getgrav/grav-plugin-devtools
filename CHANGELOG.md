@@ -1,3 +1,9 @@
+# v1.4.2
+## mm/dd/2020
+
+1. [](#improved)
+    * User return typehints in plugin.php
+
 # v1.4.1
 ## 05/20/2020
 
