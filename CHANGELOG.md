@@ -3,6 +3,7 @@
 
 1. [](#improved)
     * User return typehints in plugin.php
+    * Add proper twig escapes into a new theme
 
 # v1.4.1
 ## 05/20/2020

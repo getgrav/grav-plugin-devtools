@@ -1,17 +1,17 @@
 {% set theme_config = attribute(config.themes, config.system.pages.theme) %}
 <!DOCTYPE html>
-<html lang="{{ grav.language.getActive ?: grav.config.site.default_lang }}">
+<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
 <head>
 {% block head %}
     <meta charset="utf-8" />
-    <title>{% if header.title %}{{ header.title|e('html') }} | {% endif %}{{ site.title|e('html') }}</title>
+    <title>{% if header.title %}{{ header.title|e }} | {% endif %}{{ site.title|e }}</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% include 'partials/metadata.html.twig' %}
 
-    <link rel="icon" type="image/png" href="{{ url('theme://images/logo.png') }}" />
-    <link rel="canonical" href="{{ page.url(true, true) }}" />
+    <link rel="icon" type="image/png" href="{{ url('theme://images/logo.png')|e }}" />
+    <link rel="canonical" href="{{ page.url(true, true)|e }}" />
 {% endblock head %}
 
 {% block stylesheets %}
@@ -29,14 +29,14 @@
     {{ assets.js()|raw }}
 {% endblock %}
 </head>
-<body id="top" class="{{ page.header.body_classes }}">
+<body id="top" class="{{ page.header.body_classes|e }}">
 
 {% block header %}
     <div class="header">
         <div class="wrapper padding">
-            <a class="logo left" href="{{ home_url }}">
+            <a class="logo left" href="{{ home_url|e }}">
                 <i class="fa fa-rebel"></i>
-                {{ config.site.title }}
+                {{ config.site.title|e }}
             </a>
             {% block header_navigation %}
             <nav class="main-nav">
