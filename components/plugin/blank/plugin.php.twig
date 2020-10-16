@@ -20,7 +20,7 @@ class {{ component.name|camelize }}Plugin extends Plugin
      *     callable (or function) as well as the priority. The
      *     higher the number the higher the priority.
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'onPluginsInitialized' => [
@@ -43,7 +43,7 @@ class {{ component.name|camelize }}Plugin extends Plugin
     /**
      * Initialize the plugin
      */
-    public function onPluginsInitialized()
+    public function onPluginsInitialized(): void
     {
         // Don't proceed if we are in the admin plugin
         if ($this->isAdmin()) {
