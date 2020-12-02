@@ -1,5 +1,5 @@
 # v1.4.2
-## mm/dd/2020
+## 12/02/2020
 
 1. [](#improved)
     * User return typehints in plugin.php
