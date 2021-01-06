@@ -1,3 +1,9 @@
+# v1.4.3
+## dd/mm/2021
+
+1. [](#bugfix)
+   * Output cmd does not correctly show colors [#56](https://github.com/getgrav/grav-plugin-devtools/issues/56)
+
 # v1.4.2
 ## 12/02/2020
 

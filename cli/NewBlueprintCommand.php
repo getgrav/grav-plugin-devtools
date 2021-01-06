@@ -1,12 +1,10 @@
 <?php
 namespace Grav\Plugin\Console;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 require_once(__DIR__ . '/../classes/DevToolsCommand.php');
 
@@ -77,10 +75,9 @@ class NewBlueprintCommand extends DevToolsCommand
         ];
 
         $this->validateOptions();
+        $io = new SymfonyStyle($this->input, $this->output);
 
         $this->component = array_replace($this->component, $this->options);
-
-        $helper = $this->getHelper('question');
 
         if (!$this->options['template']) {
             $question = new ChoiceQuestion(
@@ -88,15 +85,14 @@ class NewBlueprintCommand extends DevToolsCommand
             array('newtab', 'append')
         );
 
-            $this->component['template'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['template'] = $io->askQuestion($question);
         }
         if (!$this->options['bpname']) {
-            $question = new Question('Enter <yellow>Blueprint Name</yellow>: ');
+            $question = new Question('Enter <yellow>Blueprint Name</yellow>');
 
 
-            $this->component['bpname'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['bpname'] = $io->askQuestion($question);
         }
-       // $this->component['template'] = $helper->ask($this->input, $this->output, $question);
     
         $this->createComponent();
     }

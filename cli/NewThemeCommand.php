@@ -1,12 +1,10 @@
 <?php
 namespace Grav\Plugin\Console;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 require_once(__DIR__ . '/../classes/DevToolsCommand.php');
 
@@ -89,61 +87,60 @@ class NewThemeCommand extends DevToolsCommand
         ];
 
         $this->validateOptions();
+        $io = new SymfonyStyle($this->input, $this->output);
 
         $this->component = array_replace($this->component, $this->options);
 
-        $helper = $this->getHelper('question');
-
         if (!$this->options['name']) {
-            $question = new Question('Enter <yellow>Theme Name</yellow>: ');
+            $question = new Question('Enter <yellow>Theme Name</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('name', $value);
             });
 
-            $this->component['name'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['name'] = $io->askQuestion($question);
         }
 
         if (!$this->options['description']) {
-            $question = new Question('Enter <yellow>Theme Description</yellow>: ');
+            $question = new Question('Enter <yellow>Theme Description</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('description', $value);
             });
 
-            $this->component['description'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['description'] = $io->askQuestion($question);
         }
 
         if (!$this->options['author']['name']) {
-            $question = new Question('Enter <yellow>Developer Name</yellow>: ');
+            $question = new Question('Enter <yellow>Developer Name</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('developer', $value);
             });
 
-            $this->component['author']['name'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['name'] = $io->askQuestion($question);
         }
 
         if (!$this->options['author']['githubid']) {
-            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank): ');
+            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank)');
             $question->setValidator(function ($value) {
                 return $this->validate('githubid', $value);
             });
 
-            $this->component['author']['githubid'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['githubid'] = $io->askQuestion($question);
         }
 
         if (!$this->options['author']['email']) {
-            $question = new Question('Enter <yellow>Developer Email</yellow>: ');
+            $question = new Question('Enter <yellow>Developer Email</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('email', $value);
             });
 
-            $this->component['author']['email'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['email'] = $io->askQuestion($question);
         }
 
         $question = new ChoiceQuestion(
             'Please choose an option',
             array('pure-blank' => 'Basic Theme using Pure.css', 'inheritance' => 'Inherit from another theme', 'copy' => 'Copy another theme')
         );
-        $this->component['template'] = $helper->ask($this->input, $this->output, $question);
+        $this->component['template'] = $io->askQuestion($question);
 
         if ($this->component['template'] === 'inheritance') {
             $themes = $this->gpm->getInstalledThemes();
@@ -152,10 +149,10 @@ class NewThemeCommand extends DevToolsCommand
                 array_push($installedThemes, $key);
             }
             $question = new ChoiceQuestion(
-                'Please choose a theme to extend: ',
+                'Please choose a theme to extend',
                 $installedThemes
             );
-            $this->component['extends'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['extends'] = $io->askQuestion($question);
         } elseif ($this->component['template'] === 'copy') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
@@ -163,10 +160,10 @@ class NewThemeCommand extends DevToolsCommand
                 array_push($installedThemes, $key);
             }
             $question = new ChoiceQuestion(
-                'Please choose a theme to copy: ',
+                'Please choose a theme to copy',
                 $installedThemes
             );
-            $this->component['copy'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['copy'] = $io->askQuestion($question);
         }
         $this->createComponent();
     }
