@@ -1,6 +1,9 @@
 # v1.4.3
 ## dd/mm/2021
 
+1. [](#new)
+   * Updated CLI commands for latest standards
+   * Pass phpstan level 8 tests
 1. [](#bugfix)
    * Output cmd does not correctly show colors [#56](https://github.com/getgrav/grav-plugin-devtools/issues/56)
 
