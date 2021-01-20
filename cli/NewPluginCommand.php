@@ -51,6 +51,12 @@ class NewPluginCommand extends DevToolsCommand
                 InputOption::VALUE_OPTIONAL,
                 'The developer\'s email'
             )
+            ->addOption(
+                'offline',
+                'o',
+                InputOption::VALUE_NONE,
+                'Skip online name collision check'
+            )
             ->setDescription('Creates a new Grav plugin with the basic required files')
             ->setHelp('The <info>new-plugin</info> command creates a new Grav instance and performs the creation of a plugin.');
     }
@@ -76,7 +82,8 @@ class NewPluginCommand extends DevToolsCommand
                 'name' => $input->getOption('developer'),
                 'email' => $input->getOption('email'),
                 'githubid' => $input->getOption('githubid')
-            ]
+            ],
+            'offline' => $input->getOption('offline'),
         ];
 
         $this->validateOptions();

@@ -52,6 +52,12 @@ class NewThemeCommand extends DevToolsCommand
                 InputOption::VALUE_OPTIONAL,
                 'The developer\'s email'
             )
+            ->addOption(
+                'offline',
+                'o',
+                InputOption::VALUE_NONE,
+                'Skip online name collision check'
+            )
             ->setDescription('Creates a new Grav theme with the basic required files')
             ->setHelp('The <info>new-theme</info> command creates a new Grav instance and performs the creation of a theme.');
     }
@@ -77,7 +83,8 @@ class NewThemeCommand extends DevToolsCommand
                 'name' => $input->getOption('developer'),
                 'email' => $input->getOption('email'),
                 'githubid' => $input->getOption('githubid'),
-            ]
+            ],
+            'offline' => $input->getOption('offline'),
         ];
 
         $this->validateOptions();
