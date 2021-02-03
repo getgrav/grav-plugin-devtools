@@ -23,7 +23,7 @@
 {% endmacro %}
 
 <ul>
-    {% if theme_config.dropdown.enabled %}
+    {% if config.theme.dropdown.enabled %}
         {{ _self.loop(pages) }}
     {% else %}
         {% for page in pages.children.visible %}
