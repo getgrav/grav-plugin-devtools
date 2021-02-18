@@ -1,14 +1,11 @@
-# v1.4.3
+# v1.5.0
 ## 02/18/2021
 
-<<<<<<< HEAD
-1. [](#improved)
-   * Add default configuration to an inherited theme's YAML file [getgrav/grav-premium-issues#50](https://github.com/getgrav/grav-premium-issues/issues/50)
-=======
 1. [](#new)
    * Updated CLI commands for latest standards
    * Pass phpstan level 8 tests
->>>>>>> 13553f53c1281b50e259ffcd1f5bd3ac41b181bc
+1. [](#improved)
+   * Add default configuration to an inherited theme's YAML file [getgrav/grav-premium-issues#50](https://github.com/getgrav/grav-premium-issues/issues/50)
 1. [](#bugfix)
    * Output cmd does not correctly show colors [#56](https://github.com/getgrav/grav-plugin-devtools/issues/56)
 
