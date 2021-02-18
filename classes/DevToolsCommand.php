@@ -107,6 +107,14 @@ class DevToolsCommand extends ConsoleCommand
             $component_folder = $this->locator->findResource($type . 's://') . DS . $folder_name;
         }
 
+        if ($template === 'inheritance') {
+            $parent_theme = $this->component['extends'];
+            $yaml_file = $this->locator->findResource('themes://' . $parent_theme) . '/' . $parent_theme . '.yaml';
+            $yaml_config = file_get_contents($yaml_file);
+
+            $this->component['config'] = $yaml_config;
+        }
+
 
 
         if (isset($source_theme)) {

@@ -1,6 +1,8 @@
 # v1.4.3
-## dd/mm/2021
+## 02/18/2021
 
+1. [](#improved)
+   * Add default configuration to an inherited theme's YAML file [getgrav/grav-premium-issues#50](https://github.com/getgrav/grav-premium-issues/issues/50)
 1. [](#bugfix)
    * Output cmd does not correctly show colors [#56](https://github.com/getgrav/grav-plugin-devtools/issues/56)
 
