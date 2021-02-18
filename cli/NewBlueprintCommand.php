@@ -1,10 +1,10 @@
 <?php
+
 namespace Grav\Plugin\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 require_once(__DIR__ . '/../classes/DevToolsCommand.php');
 
@@ -14,35 +14,29 @@ require_once(__DIR__ . '/../classes/DevToolsCommand.php');
  */
 class NewBlueprintCommand extends DevToolsCommand
 {
-
     /**
-     * @var array
+     * @return void
      */
-    protected $options = [];
-
-    /**
-     *
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('new-blueprint')
             ->setAliases(['newblueprint','blueprint'])
             ->addOption(
                 'bpname',
-                'bp',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name of your new Grav theme'
             )
             ->addOption(
                 'name',
-                'bn',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name of your new Grav theme'
             )
             ->addOption(
                 'template',
-                'tp',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
             )
@@ -51,50 +45,44 @@ class NewBlueprintCommand extends DevToolsCommand
     }
 
     /**
-     * @return int|null|void
+     * @return int
      */
-    protected function serve()
+    protected function serve(): int
     {
         $this->init();
 
-        /**
-         * @var array DevToolsCommand $component
-         */
-        $this->component['type']        = 'blueprint';
-        $this->component['template']    = 'modular';
-       // $this->component['name']    = 'blueprints';
-        $this->component['version']     = '0.1.0';
-        $this->component['themename']     = 'bonjour';
-        
+        $input = $this->getInput();
+        $io = $this->getIO();
+
+        $this->component['type'] = 'blueprint';
+        $this->component['template'] = 'modular';
+        $this->component['version'] = '0.1.0';
+        $this->component['themename'] = 'bonjour';
 
         $this->options = [
-            'name'          => $this->input->getOption('name'),
-            'bpname'          => $this->input->getOption('bpname'),
-            'template'   => $this->input->getOption('template'),
+            'name' => $input->getOption('name'),
+            'bpname' => $input->getOption('bpname'),
+            'template' => $input->getOption('template'),
 
         ];
 
         $this->validateOptions();
-        $io = new SymfonyStyle($this->input, $this->output);
 
         $this->component = array_replace($this->component, $this->options);
 
         if (!$this->options['template']) {
-            $question = new ChoiceQuestion(
-            'Please choose a template type',
-            array('newtab', 'append')
-        );
+            $question = new ChoiceQuestion('Please choose a template type', ['newtab', 'append']);
 
             $this->component['template'] = $io->askQuestion($question);
         }
         if (!$this->options['bpname']) {
             $question = new Question('Enter <yellow>Blueprint Name</yellow>');
 
-
             $this->component['bpname'] = $io->askQuestion($question);
         }
     
         $this->createComponent();
-    }
 
+        return 0;
+    }
 }

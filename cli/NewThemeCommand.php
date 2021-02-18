@@ -1,10 +1,10 @@
 <?php
+
 namespace Grav\Plugin\Console;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 require_once(__DIR__ . '/../classes/DevToolsCommand.php');
 
@@ -14,47 +14,41 @@ require_once(__DIR__ . '/../classes/DevToolsCommand.php');
  */
 class NewThemeCommand extends DevToolsCommand
 {
-
     /**
-     * @var array
+     * @return void
      */
-    protected $options = [];
-
-    /**
-     *
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('new-theme')
             ->setAliases(['newtheme'])
             ->addOption(
                 'name',
-                'pn',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name of your new Grav theme'
             )
             ->addOption(
-                'description',
-                'd',
+                'desc',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'A description of your new Grav theme'
             )
             ->addOption(
-                'developer',
-                'dv',
+                'dev',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
             )
             ->addOption(
-                'githubid',
-                'gh',
+                'github',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The developer\'s GitHub ID'
             )
             ->addOption(
                 'email',
-                'e',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The developer\'s email'
             )
@@ -63,31 +57,30 @@ class NewThemeCommand extends DevToolsCommand
     }
 
     /**
-     * @return int|null|void
+     * @return int
      */
-    protected function serve()
+    protected function serve(): int
     {
         $this->init();
 
-        /**
-         * @var array DevToolsCommand $component
-         */
-        $this->component['type']        = 'theme';
-        $this->component['template']    = 'blank';
-        $this->component['version']     = '0.1.0';
+        $input = $this->getInput();
+        $io = $this->getIO();
+
+        $this->component['type'] = 'theme';
+        $this->component['template'] = 'blank';
+        $this->component['version'] = '0.1.0';
 
         $this->options = [
-            'name'          => $this->input->getOption('name'),
-            'description'   => $this->input->getOption('description'),
-            'author'        => [
-                'name'      => $this->input->getOption('developer'),
-                'email'     => $this->input->getOption('email'),
-                'githubid'  => $this->input->getOption('githubid'),
+            'name' => $input->getOption('name'),
+            'description' => $input->getOption('desc'),
+            'author' => [
+                'name' => $input->getOption('dev'),
+                'email' => $input->getOption('email'),
+                'githubid' => $input->getOption('github'),
             ]
         ];
 
         $this->validateOptions();
-        $io = new SymfonyStyle($this->input, $this->output);
 
         $this->component = array_replace($this->component, $this->options);
 
@@ -138,27 +131,26 @@ class NewThemeCommand extends DevToolsCommand
 
         $question = new ChoiceQuestion(
             'Please choose an option',
-            array('pure-blank' => 'Basic Theme using Pure.css', 'inheritance' => 'Inherit from another theme', 'copy' => 'Copy another theme')
+            ['pure-blank' => 'Basic Theme using Pure.css', 'inheritance' => 'Inherit from another theme', 'copy' => 'Copy another theme']
         );
         $this->component['template'] = $io->askQuestion($question);
 
         if ($this->component['template'] === 'inheritance') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
-            foreach($themes as $key => $theme) {
-                array_push($installedThemes, $key);
+            foreach ($themes as $key => $theme) {
+                $installedThemes[] = $key;
             }
-            $question = new ChoiceQuestion(
-                'Please choose a theme to extend',
-                $installedThemes
-            );
+
+            $question = new ChoiceQuestion('Please choose a theme to extend', $installedThemes);
             $this->component['extends'] = $io->askQuestion($question);
         } elseif ($this->component['template'] === 'copy') {
             $themes = $this->gpm->getInstalledThemes();
             $installedThemes = [];
-            foreach($themes as $key => $theme) {
-                array_push($installedThemes, $key);
+            foreach ($themes as $key => $theme) {
+                $installedThemes[] = $key;
             }
+
             $question = new ChoiceQuestion(
                 'Please choose a theme to copy',
                 $installedThemes
@@ -166,6 +158,7 @@ class NewThemeCommand extends DevToolsCommand
             $this->component['copy'] = $io->askQuestion($question);
         }
         $this->createComponent();
-    }
 
+        return 0;
+    }
 }
