@@ -1,4 +1,5 @@
 <?php
+
 namespace Grav\Plugin\Console;
 
 use Symfony\Component\Console\Input\InputOption;
@@ -12,41 +13,35 @@ require_once(__DIR__ . '/../classes/DevToolsCommand.php');
  */
 class NewPluginCommand extends DevToolsCommand
 {
-
     /**
-     * @var array
+     * @return void
      */
-    protected $options = [];
-
-    /**
-     *
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('new-plugin')
             ->setAliases(['newplugin'])
             ->addOption(
                 'name',
-                'pn',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name of your new Grav plugin'
             )
             ->addOption(
-                'description',
-                'd',
+                'desc',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'A description of your new Grav plugin'
             )
             ->addOption(
-                'developer',
-                'dv',
+                'dev',
+                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
             )
             ->addOption(
-                'githubid',
-                'gh',
+                'github',
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The developer\'s GitHub ID'
             )
@@ -61,26 +56,26 @@ class NewPluginCommand extends DevToolsCommand
     }
 
     /**
-     * @return int|null|void
+     * @return int
      */
-    protected function serve()
+    protected function serve(): int
     {
         $this->init();
 
-        /**
-         * @var array DevToolsCommand $component
-         */
-        $this->component['type']        = 'plugin';
-        $this->component['template']    = 'blank';
-        $this->component['version']     = '0.1.0';
+        $input = $this->getInput();
+        $io = $this->getIO();
+
+        $this->component['type'] = 'plugin';
+        $this->component['template'] = 'blank';
+        $this->component['version'] = '0.1.0';
 
         $this->options = [
-            'name'          => $this->input->getOption('name'),
-            'description'   => $this->input->getOption('description'),
-            'author'        => [
-                'name'      => $this->input->getOption('developer'),
-                'email'     => $this->input->getOption('email'),
-                'githubid'  => $this->input->getOption('githubid')
+            'name' => $input->getOption('name'),
+            'description' => $input->getOption('desc'),
+            'author' => [
+                'name' => $input->getOption('dev'),
+                'email' => $input->getOption('email'),
+                'githubid' => $input->getOption('github')
             ]
         ];
 
@@ -88,57 +83,57 @@ class NewPluginCommand extends DevToolsCommand
 
         $this->component = array_replace($this->component, $this->options);
 
-        $helper = $this->getHelper('question');
-
         if (!$this->options['name']) {
-            $question = new Question('Enter <yellow>Plugin Name</yellow>: ');
+            $question = new Question('Enter <yellow>Plugin Name</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('name', $value);
             });
 
-            $this->component['name'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['name'] = $io->askQuestion($question);
         }
 
         if (!$this->options['description']) {
-            $question = new Question('Enter <yellow>Plugin Description</yellow>: ');
+            $question = new Question('Enter <yellow>Plugin Description</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('description', $value);
             });
 
-            $this->component['description'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['description'] = $io->askQuestion($question);
         }
 
         if (!$this->options['author']['name']) {
-            $question = new Question('Enter <yellow>Developer Name</yellow>: ');
+            $question = new Question('Enter <yellow>Developer Name</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('developer', $value);
             });
 
-            $this->component['author']['name'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['name'] = $io->askQuestion($question);
         }
 
 
         if (!$this->options['author']['githubid']) {
-            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank): ');
+            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank)');
             $question->setValidator(function ($value) {
                 return $this->validate('githubid', $value);
             });
 
-            $this->component['author']['githubid'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['githubid'] = $io->askQuestion($question);
         }
 
         if (!$this->options['author']['email']) {
-            $question = new Question('Enter <yellow>Developer Email</yellow>: ');
+            $question = new Question('Enter <yellow>Developer Email</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('email', $value);
             });
 
-            $this->component['author']['email'] = $helper->ask($this->input, $this->output, $question);
+            $this->component['author']['email'] = $io->askQuestion($question);
         }
 
         $this->component['template'] = 'blank';
 
         $this->createComponent();
+
+        return 0;
     }
 
 }

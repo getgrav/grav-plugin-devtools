@@ -1,4 +1,5 @@
 <?php
+
 namespace Grav\Plugin\Console;
 
 use Grav\Common\Grav;
@@ -10,51 +11,38 @@ use Grav\Common\Utils;
 use RocketTheme\Toolbox\File\File;
 use Grav\Console\ConsoleCommand;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class DevToolsCommand
- * @package Grav\Console\Cli\
+ * @package Grav\Plugin\Console
  */
 class DevToolsCommand extends ConsoleCommand
 {
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $component = [];
-
-    /**
-     * @var Inflector
-     */
+    /** @var Inflector */
     protected $inflector;
-
-    /**
-     * @var UniformResourceLocator
-     */
+    /** @var UniformResourceLocator */
     protected $locator;
-
-    /**
-     * @var Twig
-     */
+    /** @var Twig */
     protected $twig;
-
-    protected $data;
-
-    /**
-     * @var gpm
-     */
+    /** @var GPM */
     protected $gpm;
+    /** @var array */
+    protected $options = [];
 
-    /**
-     * @var array
-     */
-    protected $reserved_keywords = array('__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor');
+    /** @var array */
+    protected $reserved_keywords = ['__halt_compiler', 'abstract', 'and', 'array', 'as', 'break', 'callable', 'case', 'catch', 'class', 'clone', 'const', 'continue', 'declare', 'default', 'die', 'do', 'echo', 'else', 'elseif', 'empty', 'enddeclare', 'endfor', 'endforeach', 'endif', 'endswitch', 'endwhile', 'eval', 'exit', 'extends', 'final', 'for', 'foreach', 'function', 'global', 'goto', 'if', 'implements', 'include', 'include_once', 'instanceof', 'insteadof', 'interface', 'isset', 'list', 'namespace', 'new', 'or', 'print', 'private', 'protected', 'public', 'require', 'require_once', 'return', 'static', 'switch', 'throw', 'trait', 'try', 'unset', 'use', 'var', 'while', 'xor'];
 
 
     /**
      * Initializes the basic requirements for the developer tools
+     *
+     * @return void
      */
-    protected function init()
+    protected function init(): void
     {
         if (!function_exists('curl_version')) {
             exit('FATAL: DEVTOOLS requires PHP Curl module to be installed');
@@ -74,17 +62,42 @@ class DevToolsCommand extends ConsoleCommand
         $this->locator->addPath('plugin', '', []);
         $this->locator->addPath('blueprint', '', []);
         // $this->config->set('theme', $config->get('themes.' . $name));
-        
-        
+    }
+
+    /**
+     * Backwards compatibility to Grav 1.6.
+     *
+     * @return InputInterface
+     */
+    public function getInput(): InputInterface
+    {
+        return $this->input;
+    }
+
+    /**
+     * Backwards compatibility to Grav 1.6.
+     *
+     * @return SymfonyStyle
+     */
+    public function getIO(): SymfonyStyle
+    {
+        $output = $this->output;
+        if (!$output instanceof SymfonyStyle) {
+            $this->output = $output = new SymfonyStyle($this->input, $this->output);
+        }
+
+        return $this->output;
     }
 
     /**
      * Copies the component type and renames accordingly
+     *
+     * @return bool
      */
-    protected function createComponent()
+    protected function createComponent(): bool
     {
         $name = $this->component['name'];
-        $folder_name = strtolower($this->inflector->hyphenize($name));
+        $folder_name = strtolower($this->inflector::hyphenize($name));
         $new_theme = $folder_name;
         $type = $this->component['type'];
         $grav = Grav::instance();
@@ -98,7 +111,7 @@ class DevToolsCommand extends ConsoleCommand
             $source_theme = $this->locator->findResource('themes://' . $current_theme);
             $template_folder = $source_theme;
         } else {
-            $template_folder = __DIR__ . '/../components/' . $type . DS . $template;
+            $template_folder = __DIR__ . "/../components/{$type}/{$template}";
         }
 
         if ($type === 'blueprint') {
@@ -107,7 +120,16 @@ class DevToolsCommand extends ConsoleCommand
             $component_folder = $this->locator->findResource($type . 's://') . DS . $folder_name;
         }
 
+        if (false === $template_folder) {
+            $this->output->writeln("<red>Theme {$current_theme} does not exist</red>");
+            return false;
+        }
 
+        if ($template === 'inheritance') {
+            $parent_theme = $this->component['extends'];
+            $yaml_file = $this->locator->findResource('themes://' . $parent_theme) . '/' . $parent_theme . '.yaml';
+            $this->component['config'] = file_get_contents($yaml_file);;
+        }
 
         if (isset($source_theme)) {
             /**
@@ -117,6 +139,10 @@ class DevToolsCommand extends ConsoleCommand
             // Get source if a symlink
             if (is_link($template_folder)) {
                 $template_folder = readlink($template_folder);
+                if (false === $template_folder) {
+                    $this->output->writeln("<red>Theme {$current_theme} is a bad symlink</red>");
+                    return false;
+                }
             }
 
             //Copy All files to component folder
@@ -135,16 +161,16 @@ class DevToolsCommand extends ConsoleCommand
 
             $regex_array = [
                 $new_theme . '.php' => [
-                    ['/class ' . $this->inflector->camelize($current_theme) . ' extends/i'],
-                    ['class ' . $this->inflector->camelize($name) . ' extends']
+                    ['/class ' . $this->inflector::camelize($current_theme) . ' extends/i'],
+                    ['class ' . $this->inflector::camelize($name) . ' extends']
                 ],
                 'blueprints.yaml' => [
-                     ['/'.$this->inflector->camelize($current_theme).'/', '/'.$this->inflector->hyphenize($current_theme).'/', '/'.$this->inflector->titleize($current_theme).'/', '/'.$this->inflector->underscorize($current_theme).'/'],
-                     [$this->inflector->camelize($name), $this->inflector->hyphenize($name),$this->inflector->titleize($name), $this->inflector->underscorize($name)]
+                     ['/'.$this->inflector::camelize($current_theme).'/', '/'.$this->inflector::hyphenize($current_theme).'/', '/'.$this->inflector::titleize($current_theme).'/', '/'.$this->inflector::underscorize($current_theme).'/'],
+                     [$this->inflector::camelize($name), $this->inflector::hyphenize($name),$this->inflector::titleize($name), $this->inflector::underscorize($name)]
                 ],
                 'README.md' => [
-                     ['/'.$this->inflector->camelize($current_theme).'/', '/'.$this->inflector->hyphenize($current_theme).'/', '/'.$this->inflector->titleize($current_theme).'/', '/'.$this->inflector->underscorize($current_theme).'/'],
-                     [$this->inflector->camelize($name), $this->inflector->hyphenize($name),$this->inflector->titleize($name), $this->inflector->underscorize($name)]
+                     ['/'.$this->inflector::camelize($current_theme).'/', '/'.$this->inflector::hyphenize($current_theme).'/', '/'.$this->inflector::titleize($current_theme).'/', '/'.$this->inflector::underscorize($current_theme).'/'],
+                     [$this->inflector::camelize($name), $this->inflector::hyphenize($name),$this->inflector::titleize($name), $this->inflector::underscorize($name)]
                 ]
 
             ];
@@ -207,12 +233,10 @@ class DevToolsCommand extends ConsoleCommand
                 rename($component_folder . DS . $type . '.php', $component_folder . DS . $folder_name . '.php');
                 rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $folder_name . '.yaml');
             } else {
-                $bpname = $this->inflector->hyphenize($this->component['bpname']);
+                $bpname = $this->inflector::hyphenize($this->component['bpname']);
                 rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $bpname . '.yaml');
             }
         }
-
-
 
         $this->output->writeln('');
         $this->output->writeln('<green>SUCCESS</green> ' . $type . ' <magenta>' . $name . '</magenta> -> Created Successfully');
@@ -229,8 +253,10 @@ class DevToolsCommand extends ConsoleCommand
 
     /**
      * Iterate through all options and validate
+     *
+     * @return void
      */
-    protected function validateOptions()
+    protected function validateOptions(): void
     {
         foreach (array_filter($this->options) as $type => $value) {
             $this->validate($type, $value);
@@ -238,13 +264,11 @@ class DevToolsCommand extends ConsoleCommand
     }
 
     /**
-     * @param        $type
-     * @param        $value
-     * @param string $extra
-     *
+     * @param string $type
+     * @param mixed $value
      * @return mixed
      */
-    protected function validate($type, $value, $extra = '')
+    protected function validate(string $type, $value)
     {
         $grav = Grav::instance();
         $config = $grav['config'];
@@ -307,11 +331,12 @@ class DevToolsCommand extends ConsoleCommand
         return $value;
     }
 
-    public function isReservedWord($word)
+    /**
+     * @param string $word
+     * @return bool
+     */
+    public function isReservedWord(string $word): bool
     {
-        if (in_array($word, $this->reserved_keywords, true)) {
-            return true;
-        }
-        return false;
+        return in_array($word, $this->reserved_keywords, true);
     }
 }
