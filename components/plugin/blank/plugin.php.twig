@@ -24,7 +24,8 @@ class {{ component.name|camelize }}Plugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
-                ['autoload', 100000], // TODO: Remove when plugin requires Grav >=1.7
+                // Uncomment following line when plugin requires Grav < 1.7
+                // ['autoload', 100000],
                 ['onPluginsInitialized', 0]
             ]
         ];
