@@ -26,10 +26,10 @@ By default, devtools will perform a check with the online gpm repository to ensu
 
 ## Plugin Scaffolding
 
-To create a new plugin you simply need to run: `bin/plugin devtools newplugin` and fill in the few questions at the prompts:
+To create a new plugin you simply need to run: `bin/plugin devtools new-plugin` and fill in the few questions at the prompts:
 
 ```
-> bin/plugin devtools newplugin
+> bin/plugin devtools new-plugin
 Enter Plugin Name: MyPlugin
 Enter Plugin Description: My New Custom Plugin
 Enter Developer Name: Johnny Rotten
@@ -46,7 +46,7 @@ Path: /home/johnnyr/webroot/grav-installation/user/plugins/myplugin
 To create a new theme you simply need to run: `bin/plugin devtools new-theme` and fill in the few questions at the prompts:
 
 ```
-> bin/plugin devtools newtheme
+> bin/plugin devtools new-theme
 Enter Theme Name: MyTheme
 Enter Theme Description: My New Custom Theme
 Enter Developer Name: Johnny Rotten
