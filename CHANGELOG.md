@@ -1,5 +1,5 @@
 # v1.5.1
-## mm/dd/2021
+## 03/17/2021
 
 1. [](#improved)
    * Clearer instructions for composer initialization [#62](https://github.com/getgrav/grav-plugin-devtools/pull/62)
