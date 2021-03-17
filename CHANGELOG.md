@@ -1,3 +1,10 @@
+# v1.5.1
+## 03/17/2021
+
+1. [](#improved)
+   * Clearer instructions for composer initialization [#62](https://github.com/getgrav/grav-plugin-devtools/pull/62)
+   * Comment out autoload subscription event by default now that Grav 1.7 is out [#62](https://github.com/getgrav/grav-plugin-devtools/pull/62)
+
 # v1.5.0
 ## 02/18/2021
 
