@@ -1,0 +1,30 @@
+{
+  "name": "{{ component.name }}",
+  "repository": "",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "postcss css/site.css -o dist/css/site.css --verbose",
+    "watch": "postcss css/site.css -o dist/css/site.css --watch --verbose",
+    "prod" : "postcss css/site.css -o dist/css/site.min.css --env production --verbose"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "alpinejs": "^2.8.2",
+    "tailwindcss": "^2.1.2",
+    "@tailwindcss/forms": "^0.3.2",
+    "@tailwindcss/typography": "^0.4.0",
+    "tailwindcss-debug-screens": "^2.0.0",
+    "autoprefixer": "^10.2.5",
+    "precss": "^4.0.0",
+    "cssnano": "^4.1.11",
+    "postcss": "^8.2.9",
+    "postcss-cli": "^8.3.1",
+    "postcss-import": "^14.0.1",
+    "postcss-nested": "^5.0.5",
+    "postcss-hexrgba": "^2.0.1",
+    "postcss-color-function": "^4.1.0"
+  }
+}
