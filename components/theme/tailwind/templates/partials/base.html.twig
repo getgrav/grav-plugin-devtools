@@ -1,0 +1,67 @@
+{% set extension = config.theme.production ? '.min' : '' %}
+<!DOCTYPE html>
+<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
+<head>
+    {% block head %}
+        <meta charset="utf-8" />
+        <title>{% if header.title %}{{ header.title|e }} | {% endif %}{{ site.title|e }}</title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% include 'partials/metadata.html.twig' %}
+
+        <link rel="icon" type="image/png" href="{{ url('theme://images/logo.png')|e }}" />
+        <link rel="canonical" href="{{ page.url(true, true)|e }}" />
+    {% endblock head %}
+
+    {% block stylesheets %}
+        {% do assets.addCss('theme://dist/css/app' ~ extension ~ '.css', 98) %}
+    {% endblock %}
+
+    {% block javascripts %}
+    {% endblock %}
+
+    {% block assets deferred %}
+    {{ assets.css()|raw }}
+    {{ assets.js()|raw }}
+    {% endblock %}
+</head>
+<body id="top" class="{{ page.header.body_classes|e }} {{ config.theme.production ?: 'debug-screens' }}">
+
+{% block header %}
+    <div class="header">
+        <div class="">
+            <a class="logo" href="{{ home_url|e }}">
+                {{ config.site.title|e }}
+            </a>
+            {% block header_navigation %}
+                <nav class="main-nav">
+                    {% include 'partials/navigation.html.twig' %}
+                </nav>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <section id="body">
+        <div class="prose">
+            {% block content %}{% endblock %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer %}
+    <div class="footer text-center">
+        <div class="">
+            <p><a href="http://getgrav.org">Grav</a>, by <a href="http://www.rockettheme.com">RocketTheme</a>.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bottom %}
+    {{ assets.js('bottom')|raw }}
+{% endblock %}
+
+</body>
+</html>

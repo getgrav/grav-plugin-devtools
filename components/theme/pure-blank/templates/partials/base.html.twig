@@ -1,4 +1,3 @@
-{% set theme_config = attribute(config.themes, config.system.pages.theme) %}
 <!DOCTYPE html>
 <html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
 <head>
@@ -11,7 +10,7 @@
     {% include 'partials/metadata.html.twig' %}
 
     <link rel="icon" type="image/png" href="{{ url('theme://images/logo.png')|e }}" />
-    <link rel="canonical" href="{{ page.url(true, true)|e }}" />
+    <link rel="canonical" href="{{ page.canonical(true)|e }}" />
 {% endblock head %}
 
 {% block stylesheets %}
