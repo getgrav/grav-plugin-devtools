@@ -244,7 +244,7 @@ class DevToolsCommand extends ConsoleCommand
         $this->output->writeln('Path: <cyan>' . $component_folder . '</cyan>');
         $this->output->writeln('');
         if ($type === 'plugin') {
-            $this->output->writeln('<yellow>Please run `cd user/plugins/' . $name . '` and `composer update` to initialize the autoloader</yellow>');
+            $this->output->writeln('<yellow>Please run `cd ' . $component_folder . '` and `composer update` to initialize the autoloader</yellow>');
             $this->output->writeln('');
         }
 
