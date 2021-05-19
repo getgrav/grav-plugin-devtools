@@ -1,5 +1,5 @@
 # v1.5.2
-## mm/dd/2021
+## 05/19/2021
 
 1. [](#new)
     * Added basic TailwindCSS theme [#65](https://github.com/getgrav/grav-plugin-devtools/pull/65)
