@@ -1,3 +1,15 @@
+# v1.5.2
+## 05/19/2021
+
+1. [](#new)
+    * Added basic TailwindCSS theme [#65](https://github.com/getgrav/grav-plugin-devtools/pull/65)
+1. [](#improved)
+    * Fixed typo [#67](https://github.com/getgrav/grav-plugin-devtools/pull/67)
+    * Use canonical URLs [#58](https://github.com/getgrav/grav-plugin-devtools/pull/58)
+    * Replace `theme_config` with `config.theme` [#60](https://github.com/getgrav/grav-plugin-devtools/pull/60)
+1. [](#bugfix)
+    * Fixed a bad path regarding composer install after plugin creation
+
 # v1.5.1
 ## 03/17/2021
 
