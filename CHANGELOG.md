@@ -1,4 +1,10 @@
 # v1.5.2
+## mm/dd/2021
+
+1. [](#bugfix)
+   * Fixes over-zealous regex that caused duplication in copy tasks [#69](https://github.com/getgrav/grav-plugin-devtools/issues/69)
+   
+# v1.5.2
 ## 05/19/2021
 
 1. [](#new)

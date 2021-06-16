@@ -159,20 +159,43 @@ class DevToolsCommand extends ConsoleCommand
             @rename( $base_old_filename . '.php', $base_new_filename . '.php');
             @rename( $base_old_filename . '.yaml', $base_new_filename . '.yaml');
 
-            $regex_array = [
-                $new_theme . '.php' => [
-                    ['/class ' . $this->inflector::camelize($current_theme) . ' extends/i'],
-                    ['class ' . $this->inflector::camelize($name) . ' extends']
-                ],
-                'blueprints.yaml' => [
-                     ['/'.$this->inflector::camelize($current_theme).'/', '/'.$this->inflector::hyphenize($current_theme).'/', '/'.$this->inflector::titleize($current_theme).'/', '/'.$this->inflector::underscorize($current_theme).'/'],
-                     [$this->inflector::camelize($name), $this->inflector::hyphenize($name),$this->inflector::titleize($name), $this->inflector::underscorize($name)]
-                ],
-                'README.md' => [
-                     ['/'.$this->inflector::camelize($current_theme).'/', '/'.$this->inflector::hyphenize($current_theme).'/', '/'.$this->inflector::titleize($current_theme).'/', '/'.$this->inflector::underscorize($current_theme).'/'],
-                     [$this->inflector::camelize($name), $this->inflector::hyphenize($name),$this->inflector::titleize($name), $this->inflector::underscorize($name)]
-                ]
+            $camelized_current = $this->inflector::camelize($current_theme);
+            $camelized_new = $this->inflector::camelize($name);
 
+            $hyphenized_current = $this->inflector::hyphenize($current_theme);
+            $hyphenized_new = $this->inflector::hyphenize($name);
+
+            $titleized_current = $this->inflector::titleize($current_theme);
+            $titleized_new = $this->inflector::titleize($name);
+
+            $underscoreized_current = $this->inflector::underscorize($current_theme);
+            $underscoreized_new = $this->inflector::underscorize($name);
+
+            $variations_regex = [
+                ["/$camelized_current/", "/$hyphenized_current/"],
+                [$camelized_new, $hyphenized_new]
+            ];
+
+            if (!in_array("/$titleized_current/", array_values($variations_regex[0]))) {
+                $current_regex = $variations_regex[0];
+                $new_regex = $variations_regex[1];
+                $current_regex[] = "/$titleized_current/";
+                $new_regex[] = $titleized_new;
+                $variations_regex = [$current_regex, $new_regex];
+            }
+
+            if (!in_array("/$underscoreized_current/", array_values($variations_regex[0]))) {
+                $current_regex = $variations_regex[0];
+                $new_regex = $variations_regex[1];
+                $current_regex[] = "/$underscoreized_current/";
+                $new_regex[] = $underscoreized_new;
+                $variations_regex = [$current_regex, $new_regex];
+            }
+
+            $regex_array = [
+                $new_theme . '.php' => $variations_regex,
+                'blueprints.yaml' => $variations_regex,
+                'README.md' => $variations_regex,
             ];
 
             foreach ($regex_array as $filename => $data) {
