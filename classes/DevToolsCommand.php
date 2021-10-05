@@ -293,8 +293,6 @@ class DevToolsCommand extends ConsoleCommand
      */
     protected function validate(string $type, $value)
     {
-        $grav = Grav::instance();
-        $config = $grav['config'];
         switch ($type) {
             case 'name':
                 // Check If name
@@ -302,15 +300,14 @@ class DevToolsCommand extends ConsoleCommand
                     throw new \RuntimeException('Name cannot be empty');
                 }
 
-                // Check for name collision with online gpm.
-                $collision_check = $config->get('plugins.devtools.collision_check');
-                if ( $collision_check == true) {
+                if (!$this->options['offline']) {
+                    // Check for name collision with online gpm.
                     if (false !== $this->gpm->findPackage($value)) {
                         throw new \RuntimeException('Package name exists in GPM');
                     }
                 } else {
-                    $this->output->writeln('<red>Warning</red>: Devtools is configured for "<cyan>collision_check</cyan>: <red>false</red>".');
-                    $this->output->writeln('Please be aware that your project\'s plugin or theme name may conflict with an existing plugin or theme.');
+                    $this->output->writeln('');
+                    $this->output->writeln('  <red>Warning</red>: Please note that by skipping the online check, your project\'s plugin or theme name may conflict with an existing plugin or theme.');
                 }
 
                 // Check if it's reserved
