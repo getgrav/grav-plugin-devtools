@@ -1,3 +1,10 @@
+# v1.5.4
+## 10/26/2021
+
+1. [](#improved)
+   * Moved offline check to CLI flag [#70](https://github.com/getgrav/grav-plugin-devtools/issues/70)
+   * Updated footer copyrights for Pure Blank
+
 # v1.5.3
 ## 06/16/2021
 
