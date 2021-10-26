@@ -69,6 +69,11 @@ There are **three template creation options**
 2. `inheritance` - This creates a very basic template with minimal files that inherits a base theme.  To find out more about theme inheritance, [check out the subject in more details on the Grav Learn site](https://learn.getgrav.org/themes/customization#theme-inheritance).
 3. `copy` - This allows you to create a new theme based on an existing theme.  This is the simplest way to get started with a new theme by using another theme as the basis.
 
+## Skipping Online Project Name Collision Checking
 
+By default, devtools will check your project's name with the existing gpm ecosystem to ensure no collisions.  In order to skip this check, add an `--offline` or `-o` to your command:
 
+    `bin/plugin devtools new-theme --offline`
+or
 
+    `bin/plugin devtools new-theme -o`
