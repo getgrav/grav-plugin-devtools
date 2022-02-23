@@ -1,9 +1,36 @@
 <?php
 namespace Grav\Theme;
 
+use Grav\Common\Grav;
 use Grav\Common\Theme;
 
 class {{ component.name|camelize }} extends {{ component.extends|camelize }}
 {
     // Access plugin events in this class
+
+    public static function getSubscribedEvents() {
+        return [
+            'onTwigLoader' => ['onTwigLoader', 10],
+        ];
+    }
+
+    public function onTwigLoader() {
+        $this->parentHandler('onTwigLoader');
+
+        // add {{ component.extends }} theme as namespace to twig
+        // allows extending templates using `extends '@{{ component.extends }}/<path>'`, refer https://learn.getgrav.org/17/cookbook/twig-recipes#extend-base-template-of-i
+        $parent_path = Grav::instance()['locator']->findResource('themes://{{ component.extends }}');
+        $this->grav['twig']->addPath($parent_path . DIRECTORY_SEPARATOR . 'templates', '{{ component.extends }}');
+    }
+
+    private function parentHandler($event) {
+        if(method_exists(parent::class, 'getSubscribedEvents')) {
+            $parent_subscribed_events = parent::getSubscribedEvents();
+
+            if(array_key_exists($event, $parent_subscribed_events)) {
+                $parent_event_handler = array_shift($parent_subscribed_events[$event]);
+                call_user_func([parent::class, $parent_event_handler]);
+            }
+        }
+    }
 }
