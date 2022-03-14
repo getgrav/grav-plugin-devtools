@@ -15,10 +15,11 @@
     {% endblock head %}
 
     {% block stylesheets %}
-        {% do assets.addCss('theme://dist/css/app' ~ extension ~ '.css', 98) %}
+        {% do assets.addCss('theme://dist/css/site' ~ extension ~ '.css', 98) %}
     {% endblock %}
 
     {% block javascripts %}
+	    {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', 98) %}
     {% endblock %}
 
     {% block assets deferred %}
