@@ -1,0 +1,120 @@
+title: '{{ component.flex_name|capitalize }}'
+description: '{{ component.flex_name|capitalize }}'
+type: flex-objects
+
+# Flex Configuration
+config:
+    # Administration Configuration
+    admin:
+        # Admin router (optional)
+        router:
+            path: '/{{ component.flex_name|lower|underscorize }}'
+
+        # Admin menu (optional)
+        menu:
+            list:
+                route: '/{{ component.flex_name|lower|underscorize }}'
+                title: '{{ component.flex_name|capitalize }}'
+                icon: fa-address-card-o
+                # Authorization to collection admin
+                authorize: ['admin.{{ component.flex_name|lower|underscorize }}.list', 'admin.super']
+                # Priority -10 .. 10 (highest goes up)
+                priority: 2
+
+        # Admin template type / folder
+        template: default
+
+        # Permissions
+        permissions:
+            # Primary permissions
+            admin.{{ component.flex_name|lower|underscorize }}:
+                type: crudpl
+                label: '{{ component.flex_name|capitalize }}'
+
+        # List view
+        list:
+            title: name
+            fields:
+                published:
+                    field:
+                        type: toggle
+                        label: Published
+                    width: 8
+
+        # Edit View
+        edit:
+            title:
+                template: '\{\{ object.title \}\}'
+
+        # Preview View
+        preview:
+            enabled: false
+            route:
+            #template: '/plugins/flex-objects/directory:contacts'
+
+        # Data Export
+        export:
+            enabled: true
+            method: 'jsonSerialize'
+            formatter:
+                class: 'Grav\Framework\File\Formatter\YamlFormatter'
+            filename: '{{ component.flex_name|lower|underscorize }}'
+
+    # Site Configuration
+    site:
+        templates:
+            collection:
+                # Lookup for the template layout files for collections of objects
+                paths:
+                    - 'flex/{TYPE}/collection/{LAYOUT}{EXT}'
+            object:
+                # Lookup for the template layout files for objects
+                paths:
+                    - 'flex/{TYPE}/object/{LAYOUT}{EXT}'
+            defaults:
+                # Default template {TYPE}; overridden by filename of this blueprint if template folder exists
+                type: '{{ component.flex_name|lower|underscorize }}'
+                # Default template {LAYOUT}; can be overridden in render calls (usually Twig in templates)
+                layout: default
+
+    # Data Configuration
+    data:
+        # Object class to be used, allowing custom methods for the object
+        object: 'Grav\Plugin\{{ component.name|camelize }}\Flex\Types\{{ component.flex_name|camelize }}\{{ component.flex_name|camelize }}Object'
+        # Collection class to be used, allowing custom methods for the collections
+        collection: 'Grav\Plugin\{{ component.name|camelize }}\Flex\Types\{{ component.flex_name|camelize }}\{{ component.flex_name|camelize }}Collection'
+        # Index class to be used, works as a quick database-like lookup index
+        index: 'Grav\Common\Flex\Types\Generic\GenericIndex'
+        storage:
+            # Storage class, use single file storage (does not support images and assets)
+            class: 'Grav\Framework\Flex\Storage\{{ component.flex_storage|capitalize }}Storage'
+            options:
+                formatter:
+                    # File formatter class, in this case the file is stored in markdown
+                    class: 'Grav\Framework\File\Formatter\JsonFormatter'
+                # JSON file where all the objects will be stored
+                folder: user-data://{{ component.flex_name|underscorize }}
+        search:
+            # Search options
+            options:
+                contains: 1
+            # Fields to be searched
+#            fields:
+#                - title
+#                - description
+
+form:
+    validation: loose
+    fields:
+        published:
+        type: toggle
+        label: Published
+        highlight: 1
+        default: 1
+        options:
+            1: PLUGIN_ADMIN.YES
+            0: PLUGIN_ADMIN.NO
+        validate:
+            type: bool
+            required: true
+

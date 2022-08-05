@@ -1,0 +1,37 @@
+{% set githubid = component.author.githubid ?: component.author.name|hyphenize -%}
+name: {{ component.name|titleize }}
+slug: {{ component.name|hyphenize }}
+type: plugin
+version: 0.1.0
+description: {{ component.description }}
+icon: plug
+author:
+  name: {{ component.author.name }}
+  email: {{ component.author.email }}
+homepage: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}
+demo: http://demo.yoursite.com
+keywords: grav, plugin, etc
+bugs: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}/issues
+docs: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}/blob/develop/README.md
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.6.0' }
+
+form:
+  validation: loose
+  fields:
+    enabled:
+      type: toggle
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+    text_var:
+      type: text
+      label: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE
+      help: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE_HELP
