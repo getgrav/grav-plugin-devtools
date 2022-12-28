@@ -1,3 +1,7 @@
 en:
   PLUGIN_DEVTOOLS:
     COLLISION_CHECK: Online Name Collision Check
+    
+fr:
+  PLUGIN_DEVTOOLS:
+    COLLISION_CHECK: Vérification en ligne de collision de noms
