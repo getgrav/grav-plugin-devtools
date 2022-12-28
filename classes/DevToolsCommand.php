@@ -258,6 +258,20 @@ class DevToolsCommand extends ConsoleCommand
                 $bpname = $this->inflector::hyphenize($this->component['bpname']);
                 rename($component_folder . DS . $type . '.yaml', $component_folder . DS . $bpname . '.yaml');
             }
+
+            if ($this->component['flex_name']) {
+                $flex_classes_folder = $component_folder . DS . 'classes' . DS . 'Flex' . DS . 'Types';
+                $flex_name = strtolower($this->inflector::underscorize($this->component['flex_name']));
+                $flex_name_camel = $this->inflector::camelize($this->component['flex_name']);
+
+                rename($flex_classes_folder . DS . 'flex_name',$flex_classes_folder . DS . $flex_name_camel);
+
+                rename($flex_classes_folder . DS . $flex_name_camel . DS . 'Object'     . '.php',$flex_classes_folder . DS . $flex_name_camel . DS . $flex_name_camel . 'Object'     . '.php');
+                rename($flex_classes_folder . DS . $flex_name_camel . DS . 'Collection' . '.php',$flex_classes_folder . DS . $flex_name_camel . DS . $flex_name_camel . 'Collection' . '.php');
+
+                rename($component_folder . DS . 'blueprints' . DS . 'flex-objects' . DS . $type . '.yaml', $component_folder . DS . 'blueprints' . DS . 'flex-objects' . DS . $flex_name . '.yaml');
+            }
+
         }
 
         $this->output->writeln('');

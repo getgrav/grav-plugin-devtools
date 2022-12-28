@@ -3,6 +3,7 @@
 namespace Grav\Plugin\Console;
 
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
 require_once(__DIR__ . '/../classes/DevToolsCommand.php');
@@ -136,7 +137,29 @@ class NewPluginCommand extends DevToolsCommand
             $this->component['author']['email'] = $io->askQuestion($question);
         }
 
-        $this->component['template'] = 'blank';
+        $question = new ChoiceQuestion(
+            'Please choose an option',
+            ['blank' => 'Basic Plugin',
+             'flex' => 'Basic Plugin prepared for custom Flex Objects'
+            ]
+        );
+        $this->component['template'] = $io->askQuestion($question);
+
+        if ($this->component['template'] === 'flex') {
+
+            $question = new Question('Enter Flex Object Name');
+            $question->setValidator(function ($value) {
+                return $this->validate('name', $value);
+            });
+            $this->component['flex_name'] = $io->askQuestion($question);
+
+            $question = new ChoiceQuestion('Please choose a storage type', [
+                'simple' => 'Basic Storage (1 file for all objects) - no media support',
+                'file'   => 'File Storage (1 file per object)',
+                'folder' => 'Folder Storage (1 folder per object)'
+            ]);
+            $this->component['flex_storage'] = $io->askQuestion($question);
+        }
 
         $this->createComponent();
 
