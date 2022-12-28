@@ -128,7 +128,7 @@ class DevToolsCommand extends ConsoleCommand
         if ($template === 'inheritance') {
             $parent_theme = $this->component['extends'];
             $yaml_file = $this->locator->findResource('themes://' . $parent_theme) . '/' . $parent_theme . '.yaml';
-            $this->component['config'] = file_get_contents($yaml_file);;
+            $this->component['config'] = file_get_contents($yaml_file);
         }
 
         if (isset($source_theme)) {
@@ -156,8 +156,8 @@ class DevToolsCommand extends ConsoleCommand
             // Do some filename renaming
             $base_old_filename = $component_folder . '/' . $current_theme;
             $base_new_filename = $component_folder . '/' . $new_theme;
-            @rename( $base_old_filename . '.php', $base_new_filename . '.php');
-            @rename( $base_old_filename . '.yaml', $base_new_filename . '.yaml');
+            @rename($base_old_filename . '.php', $base_new_filename . '.php');
+            @rename($base_old_filename . '.yaml', $base_new_filename . '.yaml');
 
             $camelized_current = $this->inflector::camelize($current_theme);
             $camelized_new = $this->inflector::camelize($name);
@@ -211,7 +211,6 @@ class DevToolsCommand extends ConsoleCommand
             }
 
             echo $source_theme;
-
         } else {
             /**
              * Use components folder and twig processing
@@ -233,7 +232,7 @@ class DevToolsCommand extends ConsoleCommand
             $templates = Folder::all($component_folder);
 
             try {
-                foreach($templates as $templateFile) {
+                foreach ($templates as $templateFile) {
                     if (Utils::endsWith($templateFile, '.twig') && !Utils::endsWith($templateFile, '.html.twig')) {
                         $content = $this->twig->processTemplate($templateFile);
                         $file = File::instance($component_folder . DS . str_replace('.twig', '', $templateFile));
@@ -318,13 +317,13 @@ class DevToolsCommand extends ConsoleCommand
                 break;
 
             case 'description':
-                if($value === null || trim($value) === '') {
+                if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Description cannot be empty');
                 }
 
                 break;
             case 'themename':
-                if($value === null || trim($value) === '') {
+                if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Theme Name cannot be empty');
                 }
 

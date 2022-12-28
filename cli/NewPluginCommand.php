@@ -35,7 +35,7 @@ class NewPluginCommand extends DevToolsCommand
             )
             ->addOption(
                 'dev',
-                 null,
+                null,
                 InputOption::VALUE_OPTIONAL,
                 'The name/username of the developer'
             )
@@ -142,5 +142,4 @@ class NewPluginCommand extends DevToolsCommand
 
         return 0;
     }
-
 }
