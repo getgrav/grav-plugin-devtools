@@ -1,3 +1,15 @@
+# v1.6.0
+## 12/28/2022
+
+1. [](#new)
+   * Added new "FlexObjects" basic plugin type [#77](https://github.com/getgrav/grav-plugin-devtools/pull/77)
+1. [](#improved)
+   * Improvements for Tailwind CSS theme + AlpineJS [#74](https://github.com/getgrav/grav-plugin-devtools/pull/74)   
+   * Updated `languages.yaml` [#76](https://github.com/getgrav/grav-plugin-devtools/pull/76)
+   * Updated links + default branch [#72](https://github.com/getgrav/grav-plugin-devtools/pull/72)
+1. [](#bugfix)
+   * Various PSR Fixes [#71](https://github.com/getgrav/grav-plugin-devtools/pull/71)
+
 # v1.5.4
 ## 10/26/2021
 
