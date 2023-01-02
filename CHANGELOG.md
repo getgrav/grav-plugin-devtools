@@ -1,3 +1,9 @@
+# v1.6.1
+## 01/02/2023
+
+1. [](#improved)
+   * Improved FlexObjects default blueprint
+
 # v1.6.0
 ## 12/28/2022
 
