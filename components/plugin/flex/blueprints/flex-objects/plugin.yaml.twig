@@ -40,11 +40,14 @@ config:
                         type: toggle
                         label: Published
                     width: 8
+                name:
+                    link: edit
+                description:
 
         # Edit View
         edit:
             title:
-                template: '\{\{ object.title \}\}'
+                template: '{{ object.title }}'
 
         # Preview View
         preview:
@@ -99,22 +102,31 @@ config:
             options:
                 contains: 1
             # Fields to be searched
-#            fields:
-#                - title
-#                - description
+            fields:
+                - name
+                - description
 
 form:
     validation: loose
     fields:
         published:
-        type: toggle
-        label: Published
-        highlight: 1
-        default: 1
-        options:
-            1: PLUGIN_ADMIN.YES
-            0: PLUGIN_ADMIN.NO
-        validate:
-            type: bool
-            required: true
-
+            type: toggle
+            label: Published
+            highlight: 1
+            default: 1
+            options:
+                1: PLUGIN_ADMIN.YES
+                0: PLUGIN_ADMIN.NO
+            validate:
+                type: bool
+                required: true
+        name:
+            type: text
+            label: Name
+            validate:
+                required: true
+        description:
+            type: text
+            label: Description
+            validate:
+                required: true
