@@ -1,0 +1,47 @@
+{% macro loop(page) %}
+    {% for p in page.children.visible %}
+        {% set current_page = (p.active or p.activeChild) ? 'selected' : '' %}
+        {% if p.children.visible.count > 0 %}
+            <li class="has-children {{ current_page|e }}">
+                <a href="{{ p.url|e }}">
+                    {% if p.header.icon %}<i class="fa fa-{{ p.header.icon|e }}"></i>{% endif %}
+                    {{ p.menu|e }}
+                </a>
+                <ul>
+                    {{ _self.loop(p) }}
+                </ul>
+            </li>
+        {% else %}
+            <li class="{{ current_page|e }}">
+                <a href="{{ p.url|e }}">
+                    {% if p.header.icon %}<i class="fa fa-{{ p.header.icon|e }}"></i>{% endif %}
+                    {{ p.menu|e }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+<ul>
+    {% if config.theme.dropdown.enabled %}
+        {{ _self.loop(pages) }}
+    {% else %}
+        {% for page in pages.children.visible %}
+            {% set current_page = (page.active or page.activeChild) ? 'selected' : '' %}
+            <li class="{{ current_page|e }}">
+                <a href="{{ page.url|e }}">
+                    {% if page.header.icon %}<i class="fa fa-{{ page.header.icon|e }}"></i>{% endif %}
+                    {{ page.menu|e }}
+                </a>
+            </li>
+        {% endfor %}
+    {% endif %}
+    {% for mitem in site.menu %}
+        <li>
+            <a href="{{ mitem.url|e }}">
+                {% if mitem.icon %}<i class="fa fa-{{ mitem.icon|e }}"></i>{% endif %}
+                {{ mitem.text|e }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

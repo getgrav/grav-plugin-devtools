@@ -1,3 +1,10 @@
+# v1.7.0
+## 02/13/2023
+
+1. [](#improved)
+    * Created non-opinionated and basic Tailwind CSS theme as default `tailwind` solution
+    * Moved the opinionated Tailwind CSS theme with Laravel Mix to a separate option
+
 # v1.6.1
 ## 01/02/2023
 

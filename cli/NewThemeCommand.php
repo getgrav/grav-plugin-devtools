@@ -138,7 +138,13 @@ class NewThemeCommand extends DevToolsCommand
 
         $question = new ChoiceQuestion(
             'Please choose an option',
-            ['pure-blank' => 'Basic Theme using Pure.css', 'tailwind' => 'Basic Theme using tailwind.css', 'inheritance' => 'Inherit from another theme', 'copy' => 'Copy another theme']
+            [
+                'pure-blank' => 'Basic Theme using Pure.css',
+                'tailwind' => 'Basic Theme using tailwind.css and including Alpine.js',
+                'tailwind-mix' => 'Same as `tailwind` but more opinionated with Laravel Mix compiler',
+                'inheritance' => 'Inherit from another theme',
+                'copy' => 'Copy another theme'
+            ]
         );
         $this->component['template'] = $io->askQuestion($question);
 
