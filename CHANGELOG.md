@@ -1,5 +1,5 @@
 # v1.7.0
-## 02/13/2023
+## 02/15/2023
 
 1. [](#improved)
     * Created non-opinionated and basic Tailwind CSS theme as default `tailwind` solution
