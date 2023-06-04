@@ -315,7 +315,7 @@ class DevToolsCommand extends ConsoleCommand
 
                 // Check if name starts with a numeric character
                 if (is_numeric($value[0])) {
-                    throw new \RuntimeException('Name must start with a alphanumeric character [a-z|A-Z]');
+                    throw new \RuntimeException('Name must start with an alphabetic character (A-Z, a-z)');
                 }
 
                 if (!$this->options['offline']) {
