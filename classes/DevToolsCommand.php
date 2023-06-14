@@ -308,9 +308,14 @@ class DevToolsCommand extends ConsoleCommand
     {
         switch ($type) {
             case 'name':
-                // Check If name
+                // Check if name is empty
                 if ($value === null || trim($value) === '') {
                     throw new \RuntimeException('Name cannot be empty');
+                }
+
+                // Check if name starts with a numeric character
+                if (is_numeric($value[0])) {
+                    throw new \RuntimeException('Name must start with an alphabetic character (A-Z, a-z)');
                 }
 
                 if (!$this->options['offline']) {

@@ -1,3 +1,9 @@
+# v1.7.1
+## 06/14/2023
+
+1. [](#improved)
+   * Removed platform-config [#81](https://github.com/getgrav/grav-plugin-devtools/pull/81)
+
 # v1.7.0
 ## 02/15/2023
 
