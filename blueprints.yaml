@@ -1,7 +1,7 @@
 name: DevTools
 slug: devtools
 type: plugin
-version: 1.7.0
+version: 1.7.1
 description: Plugin and Theme scaffolding utilities
 icon: cogs
 author:
