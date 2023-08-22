@@ -19,7 +19,7 @@
     {% endblock %}
 
     {% block javascripts %}
-	    {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', 98) %}
+        {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', { loading: 'defer' }) %}
     {% endblock %}
 
     {% block assets deferred %}
