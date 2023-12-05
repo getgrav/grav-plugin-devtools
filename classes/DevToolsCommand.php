@@ -261,6 +261,7 @@ class DevToolsCommand extends ConsoleCommand
 
             if ($this->component['flex_name']) {
                 $flex_classes_folder = $component_folder . DS . 'classes' . DS . 'Flex' . DS . 'Types';
+                $flex_templates_folder = $component_folder . DS . 'templates' . DS . 'flex';
                 $flex_name = strtolower($this->inflector::underscorize($this->component['flex_name']));
                 $flex_name_camel = $this->inflector::camelize($this->component['flex_name']);
 
@@ -270,6 +271,8 @@ class DevToolsCommand extends ConsoleCommand
                 rename($flex_classes_folder . DS . $flex_name_camel . DS . 'Collection' . '.php',$flex_classes_folder . DS . $flex_name_camel . DS . $flex_name_camel . 'Collection' . '.php');
 
                 rename($component_folder . DS . 'blueprints' . DS . 'flex-objects' . DS . $type . '.yaml', $component_folder . DS . 'blueprints' . DS . 'flex-objects' . DS . $flex_name . '.yaml');
+
+                rename($flex_templates_folder . DS . 'flex_name',$flex_templates_folder . DS . $flex_name);
             }
 
         }

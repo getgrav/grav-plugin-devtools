@@ -29,12 +29,36 @@ By default, devtools will perform a check with the online gpm repository to ensu
 To create a new plugin you simply need to run: `bin/plugin devtools new-plugin` and fill in the few questions at the prompts:
 
 ```
-> bin/plugin devtools new-plugin
-Enter Plugin Name: MyPlugin
-Enter Plugin Description: My New Custom Plugin
-Enter Developer Name: Johnny Rotten
-Enter GitHub ID (can be blank): pretty-vacant
-Enter Developer Email: johnny@rotten.com
+foo@bar:~$ bin/plugin devtools new-plugin
+
+Enter Plugin Name:
+> MyPlugin
+
+Enter Plugin Description:
+> My New Custom Plugin
+
+Enter Developer Name:
+> Johnny Rotten
+
+Enter GitHub ID (can be blank):
+> pretty-vacant
+
+Enter Developer Email:
+> johnny@rotten.com
+
+Please choose an option:
+  [blank] Basic Plugin
+  [flex ] Basic Plugin prepared for custom Flex Objects
+> flex
+
+Enter Flex Object Name:
+> myflex
+
+Please choose a storage type:
+  [simple] Basic Storage (1 file for all objects) - no media support
+  [file  ] File Storage (1 file per object)
+  [folder] Folder Storage (1 folder per object)
+> folder
 
 SUCCESS plugin myplugin -> Created Successfully
 
@@ -71,9 +95,11 @@ There are **three template creation options**
 
 ## Skipping Online Project Name Collision Checking
 
-By default, devtools will check your project's name with the existing gpm ecosystem to ensure no collisions.  In order to skip this check, add an `--offline` or `-o` to your command:
+By default, devtools will check your project's name with the existing gpm ecosystem to ensure no collisions. In order to skip this check, add an `--offline` or `-o` to your command:
 
     `bin/plugin devtools new-theme --offline`
 or
 
     `bin/plugin devtools new-theme -o`
+
+In that case make shure to add `gpm: false` (e. g. on the next line after `licence:`) to your plugins or themes blueprint to avoid conflicts in the future.

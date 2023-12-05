@@ -33,7 +33,8 @@ class {{ component.name|camelize }}Plugin extends Plugin
                 // ['autoload', 100000],
                 ['onPluginsInitialized', 0]
             ],
-            FlexRegisterEvent::class       => [['onRegisterFlex', 0]],
+            FlexRegisterEvent::class    => [['onRegisterFlex', 0]],
+            'onTwigTemplatePaths'       => ['onTwigTemplatePaths', 1],
         ];
     }
 
@@ -63,6 +64,9 @@ class {{ component.name|camelize }}Plugin extends Plugin
         ]);
     }
 
+    /**
+     * Automatically initialize flex object blueprints
+     */
     public function onRegisterFlex($event): void
     {
         $flex = $event->flex;
@@ -72,5 +76,13 @@ class {{ component.name|camelize }}Plugin extends Plugin
             'blueprints://flex-objects/{{ component.flex_name|lower|underscorize }}.yaml'
         );
 
+    }
+
+    /**
+     * Add current directory to twig lookup paths.
+     */
+    public function onTwigTemplatePaths() : void
+    {
+        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
     }
 }
