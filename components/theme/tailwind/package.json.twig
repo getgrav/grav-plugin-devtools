@@ -8,9 +8,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=development tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss",
     "watch": "cross-env NODE_ENV=development tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss --watch",
-    "prod" : "cross-env NODE_ENV=production tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss"
+    "prod" : "cross-env NODE_ENV=production tailwindcss -i ./css/site.css -o ./dist/css/site.min.css --postcss"
   },
-  "dependencies": {},
+  "dependencies": {
+    "cssnano": "^7.0.1"
+  },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
