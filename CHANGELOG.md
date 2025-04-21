@@ -1,3 +1,12 @@
+# v1.8.0
+## 04/21/2025
+
+1. [](#improved)
+   * Added "version:" to composer.json as it now requires it
+   * Updated to `Tailwind 3` version `3.3.3`
+   * Better autoload instructions
+   * Fixed some `https` links in `README.md` to `https`
+
 # v1.7.1
 ## 06/14/2023
 

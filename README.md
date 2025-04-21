@@ -1,12 +1,12 @@
 # Grav Devtools Plugin
 
-The `devtools` is a [Grav](http://github.com/getgrav/grav) Plugin that lets you quickly create a scaffolding for your new plugins and themes.  The plugin provides CLI commands that allow for the quick and easy deployment of a sample scaffolding for your new plugin.
+The `devtools` is a [Grav](https://github.com/getgrav/grav) Plugin that lets you quickly create a scaffolding for your new plugins and themes.  The plugin provides CLI commands that allow for the quick and easy deployment of a sample scaffolding for your new plugin.
 
 # Installation
 
 ## GPM Installation (Preferred)
 
-The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm).  From the root of your Grav install type:
+The simplest way to install this plugin is via the [Grav Package Manager (GPM)](https://learn.getgrav.org/advanced/grav-gpm).  From the root of your Grav install type:
 
     bin/gpm install devtools
 
@@ -65,7 +65,7 @@ Path: /home/johnnyr/webroot/grav-installation/user/themes/mytheme
 
 There are **three template creation options**
 
-1. `pure-blank` - This is a very basic blank theme that uses the [Pure CSS framework](http://purecss.io/)
+1. `pure-blank` - This is a very basic blank theme that uses the [Pure CSS framework](https://purecss.io/)
 2. `inheritance` - This creates a very basic template with minimal files that inherits a base theme.  To find out more about theme inheritance, [check out the subject in more details on the Grav Learn site](https://learn.getgrav.org/themes/customization#theme-inheritance).
 3. `copy` - This allows you to create a new theme based on an existing theme.  This is the simplest way to get started with a new theme by using another theme as the basis.
 

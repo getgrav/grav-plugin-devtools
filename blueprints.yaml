@@ -1,13 +1,13 @@
 name: DevTools
 slug: devtools
 type: plugin
-version: 1.7.1
+version: 1.8.0
 description: Plugin and Theme scaffolding utilities
 icon: cogs
 author:
   name: Team Grav
   email: devs@getgrav.org
-  url: http://getgrav.org
+  url: https://getgrav.org
 homepage: https://github.com/getgrav/grav-plugin-devtools
 keywords: devtools, plugin, theme
 bugs: https://github.com/getgrav/grav-plugin-devtools/issues

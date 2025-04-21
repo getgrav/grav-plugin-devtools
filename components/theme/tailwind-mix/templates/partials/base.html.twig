@@ -19,7 +19,7 @@
     {% endblock %}
 
     {% block javascripts %}
-	    {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', 98) %}
+        {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', { loading: 'defer' }) %}
     {% endblock %}
 
     {% block assets deferred %}
@@ -55,7 +55,7 @@
 {% block footer %}
     <div class="footer text-center">
         <div class="">
-            <p><a href="http://getgrav.org">Grav</a>, by <a href="https://trilby.media">Trilby Media, LLC</a>.</p>
+            <p><a href="https://getgrav.org">Grav</a>, by <a href="https://trilby.media">Trilby Media, LLC</a>.</p>
         </div>
     </div>
 {% endblock %}
