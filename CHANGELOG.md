@@ -1,5 +1,5 @@
 # v1.8.0
-## mm/dd/2025
+## 04/21/2025
 
 1. [](#improved)
    * Added "version:" to composer.json as it now requires it
