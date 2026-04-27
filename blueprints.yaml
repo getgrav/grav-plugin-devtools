@@ -1,7 +1,7 @@
 name: DevTools
 slug: devtools
 type: plugin
-version: 1.8.0
+version: 1.9.0
 description: Plugin and Theme scaffolding utilities
 icon: cogs
 author:
@@ -12,6 +12,8 @@ homepage: https://github.com/getgrav/grav-plugin-devtools
 keywords: devtools, plugin, theme
 bugs: https://github.com/getgrav/grav-plugin-devtools/issues
 license: MIT
+compatibility:
+  grav: ['1.7', '2.0']
 
 dependencies:
   - { name: grav, version: '>=1.7.0' }
