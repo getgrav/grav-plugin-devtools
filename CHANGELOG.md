@@ -1,3 +1,13 @@
+# v1.9.0
+## 04/27/2026
+
+1. [](#new)
+   * **`bin/plugin devtools i18n-blueprints`** — new CLI command that audits blueprint YAML files (`blueprints.yaml`, `blueprints/**/*.yaml`, `admin/blueprints/**/*.yaml`) across plugins and themes, classifying every `label` / `title` / `description` / `help` / `placeholder` / `hint` value as either a translation key or hardcoded English. Supports auditing a single plugin, a `user/plugins` (or `user/themes`) directory, or a full Grav root (auto-detected via `system/defines.php` — `user/plugins` and `user/themes` are expanded automatically). Reports per-plugin counts and a hardcoded ratio.
+   * **`--fix` mode** rewrites blueprint YAML in place, replacing each hardcoded value with a generated `PLUGIN_FOO.STRING_KEY` reference and emitting matching `KEY: "Original string"` entries directly into the plugin's existing language file. Detects both lang-file conventions: appends to `languages.yaml` (multi-locale, single file) when present, otherwise to `languages/<lang>.yaml` (per-locale), creating `languages/en.yaml` when neither exists. Plugin prefix (`PLUGIN_FOO`) is read from the existing language file's keys (preserving the author's chosen convention) or derived from the directory name. Existing keys are reused when both key *and* value match — re-running `--fix` is idempotent. `--icu` emits keys under an `ICU:` block instead, for plugins targeting Grav 2 / Admin2.
+   * **`--interactive` (`-i`)** mode walks each finding one at a time with a `y/n/a/s/q` prompt for per-value review, useful for filtering false positives that the heuristic flags (CSS class strings, file paths, etc.) before any rewrite happens.
+   * **`--key-length=N`** controls the maximum generated key length (default 40, minimum 10) — long values are trimmed back to the last underscore boundary. Collisions get `_2`, `_3` suffixes automatically.
+   * **`--details`**, **`--threshold`**, **`--dry-run`**, and **`--json`** flags for inspecting findings without rewriting, scoping the report to plugins above a hardcoded ratio, previewing `--fix` output, and machine-readable output.
+
 # v1.8.0
 ## 04/21/2025
 
