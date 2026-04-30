@@ -197,7 +197,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
             $iter = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
             foreach ($iter as $file) {
                 $path = $file->getPathname();
-                if (preg_match('/\.ya?ml$/', $path)) {
+                if (preg_match('/\.ya?ml$/', (string) $path)) {
                     $files[] = $path;
                 }
             }
@@ -406,7 +406,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
                 $io->writeln(sprintf('<comment>### %s</comment>', basename($dir)));
                 foreach ($hardcoded as $h) {
                     $rel = ltrim(str_replace($dir, '', $h['file']), '/');
-                    $val = mb_strlen($h['value']) > 80 ? mb_substr($h['value'], 0, 77) . '...' : $h['value'];
+                    $val = mb_strlen((string) $h['value']) > 80 ? mb_substr((string) $h['value'], 0, 77) . '...' : $h['value'];
                     $io->writeln(sprintf('  %s:%d  %s: %s', $rel, $h['line'], $h['field'], $val));
                 }
             }
@@ -468,7 +468,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
             $f = $entry['finding'];
             $rel = ltrim(str_replace($pluginDir, '', $entry['file']), '/');
             $value = $f['value'];
-            $truncated = mb_strlen($value) > 100 ? mb_substr($value, 0, 97) . '...' : $value;
+            $truncated = mb_strlen((string) $value) > 100 ? mb_substr((string) $value, 0, 97) . '...' : $value;
 
             $io->newLine();
             $io->writeln(sprintf(
@@ -556,7 +556,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
             }
         }
         // Sort by value length desc so disambiguation is more stable.
-        usort($allFindings, fn($a, $b) => mb_strlen($b['finding']['value']) <=> mb_strlen($a['finding']['value']));
+        usort($allFindings, fn($a, $b) => mb_strlen((string) $b['finding']['value']) <=> mb_strlen((string) $a['finding']['value']));
 
         foreach ($allFindings as $entry) {
             $val = $entry['finding']['value'];
@@ -605,7 +605,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
                 }
                 $original = $lines[$idx];
                 $replaced = preg_replace(
-                    '/^(\s*' . preg_quote($f['field'], '/') . '\s*:\s*).*$/',
+                    '/^(\s*' . preg_quote((string) $f['field'], '/') . '\s*:\s*).*$/',
                     '$1' . $fullKey,
                     $original,
                     1
@@ -788,11 +788,11 @@ class I18nBlueprintsCommand extends DevToolsCommand
 
         for ($i = 0; $i < count($lines); $i++) {
             $line = $lines[$i];
-            $trimmed = trim($line);
+            $trimmed = trim((string) $line);
             if ($trimmed === '' || str_starts_with($trimmed, '#')) {
                 continue;
             }
-            $indent = strlen($line) - strlen(ltrim($line, ' '));
+            $indent = strlen((string) $line) - strlen(ltrim((string) $line, ' '));
 
             if ($fullyMatched) {
                 $blockIndent = ($matchedDepth - 1) * 2;
@@ -821,7 +821,7 @@ class I18nBlueprintsCommand extends DevToolsCommand
         if ($endOfMatchedBlock === null) {
             $endOfMatchedBlock = count($lines);
             // Trim trailing blank lines so we don't insert past them.
-            while ($endOfMatchedBlock > 0 && trim($lines[$endOfMatchedBlock - 1]) === '') {
+            while ($endOfMatchedBlock > 0 && trim((string) $lines[$endOfMatchedBlock - 1]) === '') {
                 $endOfMatchedBlock--;
             }
         }
