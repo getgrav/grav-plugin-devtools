@@ -97,7 +97,7 @@ class DevToolsCommand extends ConsoleCommand
     protected function createComponent(): bool
     {
         $name = $this->component['name'];
-        $folder_name = strtolower($this->inflector::hyphenize($name));
+        $folder_name = strtolower((string) $this->inflector::hyphenize($name));
         $new_theme = $folder_name;
         $type = $this->component['type'];
         $grav = Grav::instance();
@@ -261,7 +261,7 @@ class DevToolsCommand extends ConsoleCommand
 
             if ($this->component['flex_name']) {
                 $flex_classes_folder = $component_folder . DS . 'classes' . DS . 'Flex' . DS . 'Types';
-                $flex_name = strtolower($this->inflector::underscorize($this->component['flex_name']));
+                $flex_name = strtolower((string) $this->inflector::underscorize($this->component['flex_name']));
                 $flex_name_camel = $this->inflector::camelize($this->component['flex_name']);
 
                 rename($flex_classes_folder . DS . 'flex_name',$flex_classes_folder . DS . $flex_name_camel);
@@ -310,7 +310,7 @@ class DevToolsCommand extends ConsoleCommand
         switch ($type) {
             case 'name':
                 // Check if name is empty
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     throw new \RuntimeException('Name cannot be empty');
                 }
 
@@ -330,26 +330,26 @@ class DevToolsCommand extends ConsoleCommand
                 }
 
                 // Check if it's reserved
-                if ($this->isReservedWord(strtolower($value))) {
+                if ($this->isReservedWord(strtolower((string) $value))) {
                     throw new \RuntimeException("\"" . $value . "\" is a reserved word and cannot be used as the name");
                 }
 
                 break;
 
             case 'description':
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     throw new \RuntimeException('Description cannot be empty');
                 }
 
                 break;
             case 'themename':
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     throw new \RuntimeException('Theme Name cannot be empty');
                 }
 
                 break;
             case 'developer':
-                if ($value === null || trim($value) === '') {
+                if ($value === null || trim((string) $value) === '') {
                     throw new \RuntimeException('Developer\'s Name cannot be empty');
                 }
 
@@ -360,7 +360,7 @@ class DevToolsCommand extends ConsoleCommand
                 break;
 
             case 'email':
-                if (!preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD', $value)) {
+                if (!preg_match('/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD', (string) $value)) {
                     throw new \RuntimeException('Not a valid email address');
                 }
 
