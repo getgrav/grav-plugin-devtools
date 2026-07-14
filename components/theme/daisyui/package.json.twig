@@ -1,0 +1,25 @@
+{
+  "name": "{{ component.name }}",
+  "repository": "",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=development tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss",
+    "watch": "cross-env NODE_ENV=development tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss --watch",
+    "prod" : "cross-env NODE_ENV=production tailwindcss -i ./css/site.css -o ./dist/css/site.css --postcss"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
+    "alpinejs": "^2.8.2",
+    "autoprefixer": "^10.4.13",
+    "cross-env": "^7.0.3",
+    "daisyui": "^4.12.0",
+    "postcss": "^8.4.21",
+    "postcss-import": "^15.1.0",
+    "tailwindcss": "^3.2.6",
+    "tailwindcss-debug-screens": "^2.2.1"
+  }
+}

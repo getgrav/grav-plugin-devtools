@@ -1,0 +1,26 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    '../../config/**/*.yaml',
+    '../../pages/**/*.md',
+    './blueprints/**/*.yaml',
+    './js/**/*.js',
+    './templates/**/*.twig',
+    './{{ component.name|hyphenize }}.yaml',
+    './{{ component.name|hyphenize }}.php'
+  ],
+  darkMode: ['class', '[data-theme="dark"]'],
+  theme: {},
+  variants: {
+    extend: {}
+  },
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwindcss-debug-screens'),
+    require('daisyui')
+  ],
+  daisyui: {
+    themes: ['light', 'dark'],
+    logs: false
+  }
+}

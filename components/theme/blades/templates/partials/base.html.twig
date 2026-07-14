@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
+<head>
+{% block head %}
+    <meta charset="utf-8" />
+    <title>{% if header.title %}{{ header.title|e }} | {% endif %}{{ site.title|e }}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'partials/metadata.html.twig' %}
+
+    <link rel="icon" type="image/png" href="{{ url('theme://images/logo.png')|e }}" />
+    <link rel="canonical" href="{{ page.canonical(true)|e }}" />
+{% endblock head %}
+
+{% block stylesheets %}
+    {% do assets.addCss('https://cdn.jsdelivr.net/npm/@anyblades/blades@2/css/blades.min.css', 100) %}
+    {% do assets.addCss('theme://css/custom.css', 98) %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block assets deferred %}
+    {{ assets.css()|raw }}
+    {{ assets.js()|raw }}
+{% endblock %}
+</head>
+<body id="top" class="{{ page.header.body_classes|e }}">
+
+{% block header %}
+    <header class="container">
+        <nav>
+            <ul>
+                <li>
+                    <a href="{{ home_url|e }}" class="contrast"><strong>{{ config.site.title|e }}</strong></a>
+                </li>
+            </ul>
+            {% block header_navigation %}
+                {% include 'partials/navigation.html.twig' %}
+            {% endblock %}
+        </nav>
+    </header>
+{% endblock %}
+
+{% block body %}
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}
+
+{% block footer %}
+    <footer class="container">
+        <small>
+            <a href="https://getgrav.org">Grav</a> theme by
+            <a href="https://trilby.media">Trilby Media, LLC</a>.
+        </small>
+    </footer>
+{% endblock %}
+
+{% block bottom %}
+    {{ assets.js('bottom')|raw }}
+{% endblock %}
+
+</body>
+</html>

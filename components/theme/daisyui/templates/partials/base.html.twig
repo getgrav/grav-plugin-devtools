@@ -1,6 +1,6 @@
 {% set extension = config.theme.production ? '.min' : '' %}
 <!DOCTYPE html>
-<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}">
+<html lang="{{ (grav.language.getActive ?: grav.config.site.default_lang)|e }}" data-theme="{{ config.theme.daisyui_theme|default('light')|e }}">
 <head>
     {% block head %}
         <meta charset="utf-8" />
@@ -19,7 +19,7 @@
     {% endblock %}
 
     {% block javascripts %}
-        {% do assets.addJs('theme://dist/js/main' ~ extension ~ '.js', { loading: 'defer' }) %}
+        {% do assets.addJs('theme://js/main' ~ extension ~ '.js', 98) %}
     {% endblock %}
 
     {% block assets deferred %}
@@ -27,37 +27,35 @@
     {{ assets.js()|raw }}
     {% endblock %}
 </head>
-<body id="top" class="{{ page.header.body_classes|e }} {{ config.theme.production ?: 'debug-screens' }}">
+<body id="top" class="min-h-screen flex flex-col {{ page.header.body_classes|e }} {{ config.theme.production ?: 'debug-screens' }}">
 
 {% block header %}
-    <div class="header">
-        <div class="">
-            <a class="logo" href="{{ home_url|e }}">
-                {{ config.site.title|e }}
-            </a>
-            {% block header_navigation %}
-                <nav class="main-nav">
-                    {% include 'partials/navigation.html.twig' %}
-                </nav>
-            {% endblock %}
+    <header class="navbar bg-base-200">
+        <div class="navbar-start">
+            <a class="btn btn-ghost text-xl" href="{{ home_url|e }}">{{ config.site.title|e }}</a>
         </div>
-    </div>
+        {% block header_navigation %}
+            <nav class="navbar-end">
+                {% include 'partials/navigation.html.twig' %}
+            </nav>
+        {% endblock %}
+    </header>
 {% endblock %}
 
 {% block body %}
-    <section id="body">
-        <div class="prose">
+    <main class="flex-1">
+        <div class="container mx-auto px-4 py-8 prose max-w-none">
             {% block content %}{% endblock %}
         </div>
-    </section>
+    </main>
 {% endblock %}
 
 {% block footer %}
-    <div class="footer text-center">
-        <div class="">
-            <p><a href="https://getgrav.org">Grav</a>, by <a href="https://trilby.media">Trilby Media, LLC</a>.</p>
-        </div>
-    </div>
+    <footer class="footer footer-center bg-base-200 text-base-content p-4">
+        <aside>
+            <p><a class="link link-hover" href="https://getgrav.org">Grav</a> theme by <a class="link link-hover" href="https://trilby.media">Trilby Media, LLC</a>.</p>
+        </aside>
+    </footer>
 {% endblock %}
 
 {% block bottom %}

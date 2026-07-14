@@ -55,15 +55,12 @@ class NewBlueprintCommand extends DevToolsCommand
         $io = $this->getIO();
 
         $this->component['type'] = 'blueprint';
-        $this->component['template'] = 'modular';
         $this->component['version'] = '0.1.0';
-        $this->component['themename'] = 'bonjour';
 
         $this->options = [
             'name' => $input->getOption('name'),
             'bpname' => $input->getOption('bpname'),
             'template' => $input->getOption('template'),
-
         ];
 
         $this->validateOptions();

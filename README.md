@@ -35,11 +35,29 @@ Enter Plugin Description: My New Custom Plugin
 Enter Developer Name: Johnny Rotten
 Enter GitHub ID (can be blank): pretty-vacant
 Enter Developer Email: johnny@rotten.com
+Which Grav version should this target?
+  [2.0 ] Grav 2.0 only (modern, PHP 8.3+)
+  [both] Grav 1.7 and 2.0 (maximum compatibility)
+  [1.7 ] Grav 1.7 only (legacy)
+ > 2.0
+Please choose a plugin template
+  [blank] Basic Plugin
+  [flex ] Basic Plugin prepared for custom Flex Objects
+  [api  ] API + Admin Next integrated plugin (Grav 2.0)
+ > blank
 
-SUCCESS plugin myplugin -> Created Successfully
+ [OK] PLUGIN MyPlugin created successfully
 
-Path: /home/johnnyr/webroot/grav-installation/user/plugins/myplugin
+Path: /home/johnnyr/webroot/grav-installation/user/plugins/my-plugin
 ```
+
+The **Developer Name** and **Developer Email** prompts default to your local `git config` values, so you can usually just hit enter.
+
+### Plugin templates
+
+- `blank` — a minimal plugin.
+- `flex` — a plugin pre-wired for custom [Flex Objects](https://learn.getgrav.org/advanced/flex).
+- `api` — *(Grav 2.0 only)* a plugin integrated with the [Grav API plugin](https://github.com/getgrav/grav-plugin-api) and Admin Next: a REST route + controller, its own admin permissions, and an Admin Next sidebar item and screen. After creating it, run `composer install` in the plugin folder so the controller autoloads.
 
 ## Theme Scaffolding
 
@@ -52,22 +70,50 @@ Enter Theme Description: My New Custom Theme
 Enter Developer Name: Johnny Rotten
 Enter GitHub ID (can be blank): pretty-vacant
 Enter Developer Email: johnny@rotten.com
-Please choose a template type
+Which Grav version should this target?
+ > 2.0
+Please choose a theme template
   [pure-blank ] Basic Theme using Pure.css
+  [blades     ] Basic Theme using the Blades semantic CSS framework (no build step)
+  [tailwind   ] Basic Theme using tailwind.css and including Alpine.js
+  [daisyui    ] Basic Theme using Tailwind CSS and daisyUI components
   [inheritance] Inherit from another theme
   [copy       ] Copy another theme
  > pure-blank
 
-SUCCESS theme mytheme -> Created Successfully
+ [OK] THEME MyTheme created successfully
 
-Path: /home/johnnyr/webroot/grav-installation/user/themes/mytheme
+Path: /home/johnnyr/webroot/grav-installation/user/themes/my-theme
 ```
 
-There are **three template creation options**
+There are **six template creation options**
 
-1. `pure-blank` - This is a very basic blank theme that uses the [Pure CSS framework](https://purecss.io/)
-2. `inheritance` - This creates a very basic template with minimal files that inherits a base theme.  To find out more about theme inheritance, [check out the subject in more details on the Grav Learn site](https://learn.getgrav.org/themes/customization#theme-inheritance).
-3. `copy` - This allows you to create a new theme based on an existing theme.  This is the simplest way to get started with a new theme by using another theme as the basis.
+1. `pure-blank` - A very basic blank theme that uses the [Pure CSS framework](https://purecss.io/).
+2. `blades` - A semantic, no-build theme using the [Blades CSS framework](https://github.com/anyblades/blades) (a modern Pico CSS successor loaded from a CDN).
+3. `tailwind` - A basic theme using [Tailwind CSS](https://tailwindcss.com/) and [Alpine.js](https://alpinejs.dev/).
+4. `daisyui` - A theme using [Tailwind CSS](https://tailwindcss.com/) with the [daisyUI](https://daisyui.com/) component library.
+5. `inheritance` - A minimal theme that inherits a base theme. To find out more, [read about theme inheritance on the Grav Learn site](https://learn.getgrav.org/themes/customization#theme-inheritance).
+6. `copy` - Create a new theme based on an existing installed theme. The simplest way to get started by using another theme as the basis.
+
+## Grav Version Targeting
+
+Both `new-plugin` and `new-theme` ask which Grav version to target, and generate the correct `compatibility`, dependency, and PHP version for that choice:
+
+| Target | `compatibility` | Grav dependency | PHP |
+|--------|-----------------|-----------------|-----|
+| `2.0`  | `['2.0']`       | `>=2.0.0`       | `>=8.3.0` |
+| `both` | `['1.7', '2.0']`| `>=1.7.0`       | `>=8.0.0` |
+| `1.7`  | `['1.7']`       | `>=1.7.0`       | `>=7.3.6` |
+
+Pass `--grav=1.7|2.0|both` (or `-g`) to set it without the prompt (default is `2.0`). You can also pass `--template` (`-t`) to pick the template non-interactively, e.g.:
+
+    bin/plugin devtools new-plugin --grav=2.0 --template=api --name="My Plugin" --desc="..." --dev="Me" --email="me@example.com"
+
+## Installing Dependencies Automatically
+
+After creating a component, the wizard offers to run its installer for you — `composer install` for plugins, or `npm install && npm run build` for the Tailwind and daisyUI themes. Pass `--install` (`-i`) to run it automatically without the prompt.
+
+Your developer name, email, and GitHub ID are remembered between runs (saved to `user/config/plugins/devtools.yaml`) and pre-fill the prompts next time; the name and email also fall back to your local `git config`.
 
 ## Skipping Online Project Name Collision Checking
 

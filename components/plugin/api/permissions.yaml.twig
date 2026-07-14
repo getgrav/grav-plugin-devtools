@@ -1,0 +1,11 @@
+actions:
+  admin.{{ component.name|hyphenize }}:
+    type: access
+    label: {{ component.name|titleize }}
+    actions:
+      view:
+        type: access
+        label: View {{ component.name|titleize }}
+      manage:
+        type: access
+        label: Manage {{ component.name|titleize }}

@@ -1,0 +1,18 @@
+/*
+ * Custom overrides on top of the Blades CSS framework.
+ * Blades styles semantic HTML out of the box, so keep this minimal and
+ * only add what your theme actually needs.
+ */
+
+header.container > nav {
+    margin-block: 1rem;
+}
+
+main.container {
+    padding-block: 2rem;
+}
+
+footer.container {
+    margin-block: 2rem 3rem;
+    text-align: center;
+}

@@ -10,7 +10,7 @@ author:
   email: {{ component.author.email }}
 homepage: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}
 demo: http://demo.yoursite.com
-keywords: grav, plugin, etc
+keywords: grav, plugin, api, admin-next
 bugs: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}/issues
 docs: https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}/blob/develop/README.md
 license: MIT
@@ -20,7 +20,7 @@ compatibility:
 
 dependencies:
   - { name: grav, version: '>={{ component.target.grav_dep|default('2.0.0') }}' }
-  - { name: flex-objects, version: '>=1.0.0' }
+  - { name: api, version: '>=1.0.0' }
 
 form:
   validation: loose
@@ -35,7 +35,3 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
-    text_var:
-      type: text
-      label: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE
-      help: PLUGIN_{{ component.name|underscorize|upper }}.TEXT_VARIABLE_HELP

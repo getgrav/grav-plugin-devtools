@@ -1,0 +1,11 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+    <article>
+        <hgroup>
+            <h1>Error</h1>
+            <p>Something went wrong.</p>
+        </hgroup>
+        {{ page.content|raw }}
+    </article>
+{% endblock %}

@@ -1,0 +1,44 @@
+<?php
+
+namespace Grav\Plugin\{{ component.name|camelize }}\Api;
+
+use Grav\Plugin\Api\Controllers\AbstractApiController;
+use Grav\Plugin\Api\Response\ApiResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+/**
+ * REST controller for the {{ component.name|titleize }} plugin.
+ *
+ * Extends the API plugin's AbstractApiController, which is constructed with
+ * ($grav, $config) and provides helpers such as requirePermission(),
+ * getRouteParam(), getRequestBody(), getPagination() and getUser().
+ *
+ * Do NOT declare a constructor here — the API plugin instantiates the
+ * controller for you.
+ */
+class ApiController extends AbstractApiController
+{
+    /**
+     * GET /api/v1/{{ component.name|hyphenize }}/items
+     *
+     * Returns a sample payload. Responses are wrapped in a { "data": ... }
+     * envelope by ApiResponse. Throw an ApiException subclass (NotFound,
+     * Validation, Forbidden, ...) to return an RFC 7807 error.
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function index(ServerRequestInterface $request): ResponseInterface
+    {
+        // Permissions are enforced here, not on the route.
+        $this->requirePermission($request, 'admin.{{ component.name|hyphenize }}.view');
+
+        $items = [
+            ['id' => 1, 'name' => 'First item'],
+            ['id' => 2, 'name' => 'Second item'],
+        ];
+
+        return ApiResponse::create($items);
+    }
+}
