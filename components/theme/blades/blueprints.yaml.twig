@@ -4,7 +4,7 @@ slug: {{ component.name|hyphenize }}
 type: theme
 version: 0.1.0
 description: {{ component.description }}
-icon: rebel
+icon: paint-brush
 author:
   name: {{ component.author.name }}
   email: {{ component.author.email }}
@@ -15,29 +15,22 @@ bugs: https://github.com/{{ githubid }}/grav-theme-{{ component.name|hyphenize }
 readme: https://github.com/{{ githubid }}/grav-theme-{{ component.name|hyphenize }}/blob/develop/README.md
 license: MIT
 
+compatibility:
+  grav: [{% for v in component.target.compatibility %}'{{ v }}'{% if not loop.last %}, {% endif %}{% endfor %}]
+
 dependencies:
-  - { name: grav, version: '>=1.6.0' }
+  - { name: grav, version: '>={{ component.target.grav_dep|default('2.0.0') }}' }
 
 form:
-    validation: loose
-    fields:
-        dropdown.enabled:
-            type: toggle
-            label: Dropdown in Menu
-            highlight: 1
-            default: 1
-            options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
-            validate:
-                type: bool
-        production:
-            type: toggle
-            label: Production Mode
-            highlight: 1
-            default: 1
-            options:
-                1: PLUGIN_ADMIN.ENABLED
-                0: PLUGIN_ADMIN.DISABLED
-            validate:
-                type: bool
+  validation: loose
+  fields:
+    dropdown.enabled:
+        type: toggle
+        label: Dropdown in Menu
+        highlight: 1
+        default: 1
+        options:
+          1: PLUGIN_ADMIN.ENABLED
+          0: PLUGIN_ADMIN.DISABLED
+        validate:
+          type: bool

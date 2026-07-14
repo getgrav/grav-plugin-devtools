@@ -24,8 +24,10 @@ class {{ component.name|camelize }}Plugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
+{% if component.target.is17|default(false) %}
                 // Uncomment following line when plugin requires Grav < 1.7
                 // ['autoload', 100000],
+{% endif %}
                 ['onPluginsInitialized', 0]
             ]
         ];

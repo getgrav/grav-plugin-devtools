@@ -1,0 +1,74 @@
+/**
+ * {{ component.name|titleize }} — Admin Next plugin page.
+ *
+ * A plain custom element (no build step). Admin Next assigns the tag name via
+ * window.__GRAV_PAGE_TAG and serves this file at /plugin/{{ component.name|hyphenize }}.
+ * It calls the plugin's own API endpoint and lists the returned items.
+ */
+const TAG = window.__GRAV_PAGE_TAG;
+
+class {{ component.name|camelize }}Page extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._items = null;
+    this._error = null;
+  }
+
+  connectedCallback() {
+    this._render();
+    this._load();
+  }
+
+  _apiUrl(path) {
+    const base = window.__GRAV_API_SERVER_URL || '';
+    const prefix = window.__GRAV_API_PREFIX || '/api/v1';
+    return base + prefix + path;
+  }
+
+  _headers() {
+    const h = {};
+    const token = window.__GRAV_API_TOKEN;
+    if (token) h['X-API-Token'] = token;
+    return h;
+  }
+
+  async _load() {
+    try {
+      const res = await fetch(this._apiUrl('/{{ component.name|hyphenize }}/items'), { headers: this._headers() });
+      if (!res.ok) throw new Error('Request failed: ' + res.status);
+      const body = await res.json();
+      this._items = body.data || [];
+    } catch (err) {
+      this._error = err.message;
+    }
+    this._render();
+  }
+
+  _render() {
+    const style = '<style>' +
+      ':host { display: block; font-family: system-ui, sans-serif; padding: 1.5rem; }' +
+      'h1 { font-size: 1.25rem; margin: 0 0 1rem; }' +
+      'ul { list-style: none; margin: 0; padding: 0; }' +
+      'li { padding: .5rem .75rem; border: 1px solid var(--grav-border, #e2e8f0); border-radius: .375rem; margin-bottom: .5rem; }' +
+      '.error { color: #b91c1c; }' +
+      '</style>';
+
+    let body;
+    if (this._error) {
+      body = '<p class="error">' + this._error + '</p>';
+    } else if (this._items === null) {
+      body = '<p>Loading…</p>';
+    } else if (this._items.length === 0) {
+      body = '<p>No items yet.</p>';
+    } else {
+      body = '<ul>' + this._items.map((it) => '<li>' + (it.name || it.id) + '</li>').join('') + '</ul>';
+    }
+
+    this.shadowRoot.innerHTML = style + '<h1>{{ component.name|titleize }}</h1>' + body;
+  }
+}
+
+if (TAG && !customElements.get(TAG)) {
+  customElements.define(TAG, {{ component.name|camelize }}Page);
+}

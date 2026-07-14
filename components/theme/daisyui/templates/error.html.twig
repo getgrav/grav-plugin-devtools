@@ -1,0 +1,8 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+    <div role="alert" class="alert alert-error mb-6">
+        <span>Something went wrong.</span>
+    </div>
+    {{ page.content|raw }}
+{% endblock %}

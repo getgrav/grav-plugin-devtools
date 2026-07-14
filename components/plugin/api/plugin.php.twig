@@ -1,0 +1,127 @@
+<?php
+namespace Grav\Plugin;
+
+use Composer\Autoload\ClassLoader;
+use Grav\Common\Plugin;
+use Grav\Events\PermissionsRegisterEvent;
+use Grav\Framework\Acl\PermissionsReader;
+use Grav\Plugin\{{ component.name|camelize }}\Api\ApiController;
+use RocketTheme\Toolbox\Event\Event;
+
+/**
+ * Class {{ component.name|camelize }}Plugin
+ *
+ * A Grav 2.0 plugin wired into the Grav API plugin and Admin Next:
+ *   - registers a REST route backed by {@see ApiController}
+ *   - declares its own admin permissions
+ *   - adds an Admin Next sidebar item + plugin screen
+ *
+ * @package Grav\Plugin
+ */
+class {{ component.name|camelize }}Plugin extends Plugin
+{
+    /**
+     * The API/Admin-Next events must fire in every context (site, admin, CLI),
+     * so they are registered unconditionally — do not gate them behind isAdmin().
+     *
+     * @return array
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onPluginsInitialized'          => [['autoload', 100001], ['onPluginsInitialized', 0]],
+            'onCliInitialize'               => [['autoload', 100001]],
+            'onApiRegisterRoutes'           => ['onApiRegisterRoutes', 0],
+            'onApiSidebarItems'             => ['onApiSidebarItems', 0],
+            'onApiPluginPageInfo'           => ['onApiPluginPageInfo', 0],
+            PermissionsRegisterEvent::class => ['onRegisterPermissions', 0],
+        ];
+    }
+
+    /**
+     * Composer autoload — makes the plugin's classes/ directory available.
+     *
+     * @return ClassLoader
+     */
+    public function autoload(): ClassLoader
+    {
+        return require __DIR__ . '/vendor/autoload.php';
+    }
+
+    /**
+     * Initialize the plugin.
+     */
+    public function onPluginsInitialized(): void
+    {
+        // Site/front-end logic (if any) goes here. The API surface is wired
+        // separately below so it is available even inside the admin and CLI.
+    }
+
+    /**
+     * Register REST routes. Paths are relative to the API base (/api/v1) and
+     * map to [Controller::class, 'method']. Register static routes before
+     * parameterized ones. Permissions are enforced inside the controller.
+     *
+     * @param Event $event
+     */
+    public function onApiRegisterRoutes(Event $event): void
+    {
+        $routes = $event['routes'];
+
+        $routes->get('/{{ component.name|hyphenize }}/items', [ApiController::class, 'index']);
+    }
+
+    /**
+     * Add an Admin Next sidebar item pointing at this plugin's screen.
+     *
+     * @param Event $event
+     */
+    public function onApiSidebarItems(Event $event): void
+    {
+        $items = $event['items'] ?? [];
+
+        $items[] = [
+            'id'        => '{{ component.name|hyphenize }}',
+            'plugin'    => '{{ component.name|hyphenize }}',
+            'label'     => '{{ component.name|titleize }}',
+            'icon'      => 'fa-plug',
+            'route'     => '/plugin/{{ component.name|hyphenize }}',
+            'priority'  => 5,
+            'authorize' => 'admin.{{ component.name|hyphenize }}.view',
+        ];
+
+        $event['items'] = $items;
+    }
+
+    /**
+     * Describe the Admin Next screen behind /plugin/{{ component.name|hyphenize }}.
+     * A `component` page renders the web component in admin-next/pages/{{ component.name|hyphenize }}.js.
+     *
+     * @param Event $event
+     */
+    public function onApiPluginPageInfo(Event $event): void
+    {
+        if (($event['plugin'] ?? null) !== '{{ component.name|hyphenize }}') {
+            return;
+        }
+
+        $event['definition'] = [
+            'id'        => '{{ component.name|hyphenize }}',
+            'plugin'    => '{{ component.name|hyphenize }}',
+            'title'     => '{{ component.name|titleize }}',
+            'icon'      => 'fa-plug',
+            'page_type' => 'component',
+        ];
+    }
+
+    /**
+     * Register this plugin's admin permissions from permissions.yaml.
+     *
+     * @param PermissionsRegisterEvent $event
+     */
+    public function onRegisterPermissions(PermissionsRegisterEvent $event): void
+    {
+        $actions = PermissionsReader::fromYaml("plugin://{$this->name}/permissions.yaml");
+        $event->permissions->addActions($actions);
+    }
+}

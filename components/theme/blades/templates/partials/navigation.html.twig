@@ -1,0 +1,23 @@
+<ul>
+    {% for p in pages.children.visible %}
+        {% set current = (p.active or p.activeChild) ? 'aria-current="page"' : '' %}
+        {% if config.theme.dropdown.enabled and p.children.visible.count > 0 %}
+            <li>
+                <details class="dropdown">
+                    <summary>{{ p.menu|e }}</summary>
+                    <ul>
+                        <li><a href="{{ p.url|e }}">{{ p.menu|e }}</a></li>
+                        {% for child in p.children.visible %}
+                            <li><a href="{{ child.url|e }}">{{ child.menu|e }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </details>
+            </li>
+        {% else %}
+            <li><a href="{{ p.url|e }}" {{ current|raw }}>{{ p.menu|e }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% for mitem in site.menu %}
+        <li><a href="{{ mitem.url|e }}">{{ mitem.text|e }}</a></li>
+    {% endfor %}
+</ul>

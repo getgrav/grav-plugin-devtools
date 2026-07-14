@@ -1,0 +1,29 @@
+# {{ component.name|titleize }} Theme
+
+The **{{ component.name|titleize }}** Theme is for [Grav CMS](https://github.com/getgrav/grav). This README.md file should be modified to describe the features, installation, configuration, and general usage of this theme.
+
+## Description
+
+{{ component.description }}
+
+This theme is built with [Tailwind CSS](https://tailwindcss.com/) and the [daisyUI](https://daisyui.com/) component library, with [Alpine.js](https://alpinejs.dev/) for interactivity.
+
+## Building the CSS
+
+Install the toolchain and compile Tailwind + daisyUI:
+
+```
+npm install
+```
+
+Then, from the theme folder:
+
+- `npm run build` — compile once (development)
+- `npm run watch` — recompile on change (development)
+- `npm run prod` — minified production build
+
+The compiled stylesheet is written to `dist/css/site.css`. When you are ready to ship, run `npm run prod` and turn on **Production Mode** in the theme configuration.
+
+## Theming
+
+daisyUI ships light and dark themes out of the box. Pick one in the theme configuration (`daisyUI Theme`); it is applied via the `data-theme` attribute on the `<html>` element. Add more themes in `tailwind.config.js`.
