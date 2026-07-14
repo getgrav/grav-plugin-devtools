@@ -29,8 +29,6 @@ class {{ component.name|camelize }}Plugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
-                // Uncomment following line when plugin requires Grav < 1.7
-                // ['autoload', 100000],
                 ['onPluginsInitialized', 0]
             ],
             FlexRegisterEvent::class       => [['onRegisterFlex', 0]],
