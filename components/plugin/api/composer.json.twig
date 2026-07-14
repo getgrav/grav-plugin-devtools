@@ -4,7 +4,7 @@
   "type": "grav-plugin",
   "description": "{{ component.description }}",
   "version": "1.0.0",
-  "keywords": ["plugin"],
+  "keywords": ["plugin", "api", "admin-next"],
   "homepage": "https://github.com/{{ githubid }}/grav-plugin-{{ component.name|hyphenize }}",
   "license": "MIT",
   "authors": [
@@ -21,6 +21,6 @@
     "psr-4": {
       "Grav\\Plugin\\{{ component.name|camelize }}\\": "classes/"
     },
-    "classmap":  ["{{ component.name|hyphenize }}.php"]
+    "classmap": ["{{ component.name|hyphenize }}.php"]
   }
 }

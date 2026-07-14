@@ -1,0 +1,60 @@
+{% set component_title = (component.name|titleize) %}
+{% set component_hyphenated = (component.name|hyphenize) %}
+{% set developer_hyphenated = (component.author.githubid|hyphenize) %}
+# {{ component_title }} Plugin
+
+The **{{ component_title }}** Plugin is an extension for [Grav CMS](https://github.com/getgrav/grav). {{ component.description }}
+
+It is scaffolded for **Grav 2.0** with the [Grav API plugin](https://github.com/getgrav/grav-plugin-api) and **Admin Next**: a REST endpoint backed by a controller, its own admin permissions, and an Admin Next sidebar item + screen.
+
+## Requirements
+
+- Grav 2.0+
+- The `api` plugin (installed and enabled)
+
+## Installation
+
+Install via [GPM](https://learn.getgrav.org/cli-console/grav-cli-gpm):
+
+    bin/gpm install {{ component_hyphenated }}
+
+Or clone/unzip into `/user/plugins/{{ component_hyphenated }}`.
+
+Then initialize the autoloader (required — the API controller is loaded via Composer PSR-4):
+
+    cd user/plugins/{{ component_hyphenated }} && composer install
+
+## What you get
+
+| Piece | File |
+|-------|------|
+| REST route `GET /api/v1/{{ component_hyphenated }}/items` | `{{ component_hyphenated }}.php` (`onApiRegisterRoutes`) |
+| API controller | `classes/Api/ApiController.php` |
+| Admin permissions (`admin.{{ component_hyphenated }}.view` / `.manage`) | `permissions.yaml` |
+| Admin Next sidebar item + screen | `{{ component_hyphenated }}.php` + `admin-next/pages/{{ component_hyphenated }}.js` |
+
+## Trying the endpoint
+
+The API requires an authenticated admin. Grab a token from the admin (or your API auth flow) and call:
+
+```bash
+curl -k \
+  -H "X-API-Token: <your-token>" \
+  https://your-site.test/api/v1/{{ component_hyphenated }}/items
+```
+
+You should get back a `{ "data": [ ... ] }` envelope.
+
+### Permissions notes
+
+- The generated permission `admin.{{ component_hyphenated }}.view` works as soon as the plugin is enabled.
+- Super-admins bypass the check (they hold `access.api.super`, **not** the classic `admin.super`).
+- Every non-super caller also needs the `api.access` permission in addition to the plugin permission.
+
+## Usage
+
+Edit `classes/Api/ApiController.php` to return real data, add routes in `onApiRegisterRoutes`, and build out the Admin Next screen in `admin-next/pages/{{ component_hyphenated }}.js` (a plain web component — no build step required).
+
+## Credits
+
+Scaffolded with [Grav DevTools](https://github.com/getgrav/grav-plugin-devtools).

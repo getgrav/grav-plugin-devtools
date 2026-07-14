@@ -1,3 +1,22 @@
+# v2.0.0
+## 07/13/2026
+
+1. [](#new)
+    * Scaffolding can now target Grav 1.7, 2.0, or both, chosen in the wizard or with a `--grav` flag.
+    * Added a new `api` plugin template that scaffolds a plugin integrated with the Grav API plugin and Admin Next.
+    * Added a new `blades` theme template using the Blades semantic CSS framework.
+    * Added a new `daisyui` theme template using Tailwind CSS and daisyUI.
+2. [](#improved)
+    * Generated plugins and themes now declare the correct compatibility, Grav dependency, and PHP version for the chosen target.
+    * Refreshed the wizard with a title banner, grouped sections, a live folder/slug preview, and a confirmation summary before creating anything.
+    * The wizard can now run `composer install` (plugins) or the `npm` build (Tailwind and daisyUI themes) for you after creating a component, with a `--install` flag to do it automatically.
+    * Developer name, email, and GitHub ID are now remembered between runs and default from your local git config.
+    * Added a `--template` flag to choose the template without the interactive prompt.
+3. [](#bugfix)
+    * Fixed minor internal issues in blueprint and Flex Object creation.
+4. [](#removed)
+    * Removed the `tailwind-mix` theme template.
+
 # v1.9.1
 ## 04/30/2026
 

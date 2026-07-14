@@ -53,13 +53,31 @@ class NewPluginCommand extends DevToolsCommand
                 'The developer\'s email'
             )
             ->addOption(
+                'grav',
+                'g',
+                InputOption::VALUE_OPTIONAL,
+                'Target Grav version: 1.7, 2.0, or both (default: 2.0)'
+            )
+            ->addOption(
+                'template',
+                't',
+                InputOption::VALUE_OPTIONAL,
+                'Plugin template: blank, flex, or api'
+            )
+            ->addOption(
                 'offline',
                 'o',
                 InputOption::VALUE_NONE,
                 'Skip online name collision check'
             )
+            ->addOption(
+                'install',
+                'i',
+                InputOption::VALUE_NONE,
+                'Run composer install automatically after creating the plugin'
+            )
             ->setDescription('Creates a new Grav plugin with the basic required files')
-            ->setHelp('The <info>new-plugin</info> command creates a new Grav instance and performs the creation of a plugin.');
+            ->setHelp('The <info>new-plugin</info> command creates the scaffolding for a new Grav plugin.');
     }
 
     /**
@@ -72,8 +90,9 @@ class NewPluginCommand extends DevToolsCommand
         $input = $this->getInput();
         $io = $this->getIO();
 
+        $this->intro('Create a new Grav Plugin');
+
         $this->component['type'] = 'plugin';
-        $this->component['template'] = 'blank';
         $this->component['version'] = '0.1.0';
 
         $this->options = [
@@ -91,63 +110,18 @@ class NewPluginCommand extends DevToolsCommand
 
         $this->component = array_replace($this->component, $this->options);
 
-        if (!$this->options['name']) {
-            $question = new Question('Enter <yellow>Plugin Name</yellow>');
-            $question->setValidator(function ($value) {
-                return $this->validate('name', $value);
-            });
+        // Shared name / description / author prompts.
+        $this->askComponentMeta('Plugin');
 
-            $this->component['name'] = $io->askQuestion($question);
-        }
+        // Which Grav version(s) to target — drives the generated blueprint/composer.
+        $target = $this->resolveGravTarget();
 
-        if (!$this->options['description']) {
-            $question = new Question('Enter <yellow>Plugin Description</yellow>');
-            $question->setValidator(function ($value) {
-                return $this->validate('description', $value);
-            });
-
-            $this->component['description'] = $io->askQuestion($question);
-        }
-
-        if (!$this->options['author']['name']) {
-            $question = new Question('Enter <yellow>Developer Name</yellow>');
-            $question->setValidator(function ($value) {
-                return $this->validate('developer', $value);
-            });
-
-            $this->component['author']['name'] = $io->askQuestion($question);
-        }
-
-
-        if (!$this->options['author']['githubid']) {
-            $question = new Question('Enter <yellow>GitHub ID</yellow> (can be blank)');
-            $question->setValidator(function ($value) {
-                return $this->validate('githubid', $value);
-            });
-
-            $this->component['author']['githubid'] = $io->askQuestion($question);
-        }
-
-        if (!$this->options['author']['email']) {
-            $question = new Question('Enter <yellow>Developer Email</yellow>');
-            $question->setValidator(function ($value) {
-                return $this->validate('email', $value);
-            });
-
-            $this->component['author']['email'] = $io->askQuestion($question);
-        }
-
-        $question = new ChoiceQuestion(
-            'Please choose an option',
-            ['blank' => 'Basic Plugin',
-             'flex' => 'Basic Plugin prepared for custom Flex Objects'
-            ]
-        );
-        $this->component['template'] = $io->askQuestion($question);
+        // Pick the plugin template (api requires a Grav 2.0 target).
+        $this->component['template'] = $this->resolveTemplate($target->supportsApi);
 
         if ($this->component['template'] === 'flex') {
-
-            $question = new Question('Enter Flex Object Name');
+            $this->maybeSection('Flex Object');
+            $question = new Question('Enter <yellow>Flex Object Name</yellow>');
             $question->setValidator(function ($value) {
                 return $this->validate('name', $value);
             });
@@ -161,8 +135,56 @@ class NewPluginCommand extends DevToolsCommand
             $this->component['flex_storage'] = $io->askQuestion($question);
         }
 
-        $this->createComponent();
+        if (!$this->confirmSummary('plugin', $this->destinationFor('plugin'))) {
+            $io->warning('Aborted — nothing was created.');
+            return 1;
+        }
+
+        if ($this->createComponent()) {
+            $this->offerInstaller('plugin', $this->component['template'], $this->destinationFor('plugin'));
+        }
 
         return 0;
+    }
+
+    /**
+     * Resolve the plugin template from the --template flag or an interactive
+     * choice. The `api` template (API + Admin Next) is only offered/allowed
+     * when the target includes Grav 2.0.
+     *
+     * @param bool $supportsApi
+     * @return string
+     */
+    private function resolveTemplate(bool $supportsApi): string
+    {
+        $io = $this->getIO();
+
+        $choices = [
+            'blank' => 'Basic Plugin',
+            'flex'  => 'Basic Plugin prepared for custom Flex Objects',
+        ];
+        if ($supportsApi) {
+            $choices['api'] = 'API + Admin Next integrated plugin (Grav 2.0)';
+        }
+
+        $template = $this->getInput()->getOption('template');
+
+        if ($template === null) {
+            if ($this->getInput()->isInteractive()) {
+                $this->maybeSection('Template');
+                $template = $io->askQuestion(new ChoiceQuestion('Please choose a plugin template', $choices, 'blank'));
+            } else {
+                $template = 'blank';
+            }
+        }
+
+        if (!isset($choices[$template])) {
+            if ($template === 'api' && !$supportsApi) {
+                throw new \RuntimeException('The "api" template requires a Grav 2.0 target (use --grav=2.0).');
+            }
+            throw new \RuntimeException("Unknown plugin template \"{$template}\". Choose one of: " . implode(', ', array_keys($choices)));
+        }
+
+        return $template;
     }
 }
