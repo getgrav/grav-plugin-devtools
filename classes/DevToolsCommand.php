@@ -509,10 +509,88 @@ class DevToolsCommand extends ConsoleCommand
             }
         }
 
+        // The renames above only swap the name, so links and credits still belong to
+        // the source theme. Point them at the new theme and its author instead.
+        $this->resetClonedMetadata($component_folder, $current_theme, $new_theme);
+
         // Align the cloned blueprint's Grav compatibility with the chosen target.
         $this->applyTargetToBlueprint($component_folder . '/blueprints.yaml');
 
         return true;
+    }
+
+    /**
+     * Give a cloned theme its own package details: the author, description and
+     * links from the wizard in blueprints.yaml and composer.json, and a Composer
+     * classmap (plus any committed vendor/composer autoload files) that points at
+     * the renamed theme file.
+     *
+     * @return void
+     */
+    private function resetClonedMetadata(string $component_folder, string $current_theme, string $new_theme): void
+    {
+        $author   = $this->component['author'] ?? [];
+        $githubid = (string) (($author['githubid'] ?? '') ?: $this->inflector::hyphenize((string) ($author['name'] ?? '')));
+        $repo     = "https://github.com/{$githubid}/grav-theme-{$new_theme}";
+        $desc     = (string) ($this->component['description'] ?? '');
+
+        $blueprint = $component_folder . '/blueprints.yaml';
+        if (is_file($blueprint) && ($yaml = file_get_contents($blueprint)) !== false) {
+            $top = [
+                'version'     => $this->component['version'] ?? '0.1.0',
+                'description' => $desc,
+                'homepage'    => $repo,
+                'bugs'        => $repo . '/issues',
+                'readme'      => $repo . '/blob/develop/README.md',
+            ];
+            foreach ($top as $key => $value) {
+                $yaml = preg_replace('/^' . $key . ':.*$/m', $key . ': ' . Yaml::dump($value), $yaml);
+            }
+            // The source theme's demo and docs sites are not this theme's.
+            $yaml = preg_replace('/^(demo|docs):.*\n/m', '', $yaml);
+            $yaml = preg_replace(
+                '/^author:[ \t]*\n(?:[ \t]+.*\n)*/m',
+                "author:\n  name: " . Yaml::dump((string) ($author['name'] ?? '')) . "\n  email: " . Yaml::dump((string) ($author['email'] ?? '')) . "\n",
+                $yaml,
+                1
+            );
+            file_put_contents($blueprint, $yaml);
+        }
+
+        $composer = $component_folder . '/composer.json';
+        $json     = is_file($composer) ? json_decode((string) file_get_contents($composer), true) : null;
+        if (is_array($json)) {
+            $json['name']        = strtolower($githubid) . '/' . $new_theme;
+            $json['description'] = $desc;
+            $json['keywords']    = ['grav', 'theme'];
+            $json['homepage']    = $repo;
+            $json['authors']     = [array_filter([
+                'name'  => $author['name'] ?? null,
+                'email' => $author['email'] ?? null,
+                'role'  => 'Developer',
+            ])];
+            if (isset($json['autoload']['classmap']) && is_array($json['autoload']['classmap'])) {
+                $json['autoload']['classmap'] = array_map(
+                    static fn ($file) => $file === "{$current_theme}.php" ? "{$new_theme}.php" : $file,
+                    $json['autoload']['classmap']
+                );
+            }
+            file_put_contents($composer, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+        }
+
+        // A theme that commits vendor/ ships a classmap naming the old class and file.
+        $oldClass = 'Grav\\\\Theme\\\\' . $this->inflector::camelize($current_theme);
+        $newClass = 'Grav\\\\Theme\\\\' . $this->inflector::camelize($new_theme);
+        foreach (['autoload_classmap.php', 'autoload_static.php'] as $file) {
+            $path = $component_folder . '/vendor/composer/' . $file;
+            if (is_file($path) && ($php = file_get_contents($path)) !== false) {
+                file_put_contents($path, str_replace(
+                    ["'{$oldClass}'", "'/{$current_theme}.php'"],
+                    ["'{$newClass}'", "'/{$new_theme}.php'"],
+                    $php
+                ));
+            }
+        }
     }
 
     /**
