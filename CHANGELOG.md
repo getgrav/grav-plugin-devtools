@@ -1,3 +1,11 @@
+# v2.0.1
+## 09/22/2026
+
+1. [](#bugfix)
+    * Copying an existing theme now gives the new theme your own author details, description and links instead of leaving the original theme's, and drops the original's demo and docs links [#4323](https://github.com/getgrav/grav/issues/4323)
+    * A copied theme's `composer.json` is now rewritten for the new theme, so its package name, description and autoloading match what was created [#4323](https://github.com/getgrav/grav/issues/4323)
+    * A copied theme that ships a committed `vendor` folder no longer points its autoloader at the original theme's class and file, which stopped the copy from loading [#4323](https://github.com/getgrav/grav/issues/4323)
+
 # v2.0.0
 ## 07/13/2026
 
