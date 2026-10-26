@@ -1,3 +1,9 @@
+# v2.0.2
+## 10/25/2026
+
+1. [](#bugfix)
+    * Creating or copying a plugin or theme no longer crashes on hosts that disable PHP's `exec()` function; the wizard just skips filling in your name and email from git
+
 # v2.0.1
 ## 09/22/2026
 

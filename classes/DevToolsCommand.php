@@ -244,6 +244,11 @@ class DevToolsCommand extends ConsoleCommand
      */
     protected function gitConfig(string $key): ?string
     {
+        // Hosts often list exec in disable_functions; the git defaults are only a convenience
+        if (!function_exists('exec')) {
+            return null;
+        }
+
         $value = @exec('git config --get ' . escapeshellarg($key), $out, $code);
 
         return ($code === 0 && $value !== '') ? $value : null;
